@@ -1,4 +1,5 @@
 import type { App } from "@modelcontextprotocol/ext-apps";
+import { toast } from "sonner";
 import type { LogMessage } from "../types";
 
 let _app: App | null = null;
@@ -8,10 +9,13 @@ const sendLog = async (level: LogMessage["level"], message: string, data?: any) 
 
   if (level === "error") {
       console.error(message, data);
+      toast.error(message, { description: data ? JSON.stringify(data) : undefined });
   } else if (level === "warn") {
       console.warn(message, data);
+      toast.warning(message, { description: data ? JSON.stringify(data) : undefined });
   } else if (level === "info") {
       console.info(message, data);
+      toast.info(message, { description: data ? JSON.stringify(data) : undefined });
   } else {
       console.debug(message, data);
   }
