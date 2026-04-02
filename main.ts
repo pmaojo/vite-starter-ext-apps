@@ -10,6 +10,8 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import cors from "cors";
 import type { Request, Response } from "express";
+import fs from "node:fs";
+import path from "node:path";
 import { createServer } from "./server.js";
 
 /**
@@ -17,10 +19,7 @@ import { createServer } from "./server.js";
  *
  * @param createServer - Factory function that creates a new McpServer instance per request.
  */
-export async function startStreamableHTTPServer(
-  createServer: () => McpServer,
-): Promise<void> {
-  const port = parseInt(process.env.PORT ?? "3001", 10);
+export function buildApp(createServerFn: () => McpServer) {
   const isUiOnly = process.env.BUILD_FLAVOR === "ui-only";
 
   const app = createMcpExpressApp({ host: "0.0.0.0" });
@@ -28,12 +27,24 @@ export async function startStreamableHTTPServer(
 
   // Always serve the UI on / for convenience, even in full-stack mode.
   app.get("/", (req, res) => {
-    // Use absolute path relative to the module to prevent ENOENT when
-    // running from another directory.
-    const distPath = import.meta.filename.endsWith(".ts")
-      ? `${import.meta.dirname}/dist`
-      : import.meta.dirname;
-    res.sendFile(`${distPath}/mcp-app.html`);
+    // Determine where mcp-app.html is located
+    let htmlPath = "";
+    if (import.meta.filename.endsWith(".ts")) {
+      htmlPath = path.join(import.meta.dirname, "dist", "mcp-app.html");
+    } else {
+      // In a built application or vercel environment
+      htmlPath = path.join(import.meta.dirname, "mcp-app.html");
+      if (!fs.existsSync(htmlPath)) {
+        // Fallback for Vercel which might run api/index.js instead of dist/index.js
+        htmlPath = path.join(process.cwd(), "dist", "mcp-app.html");
+      }
+    }
+
+    if (fs.existsSync(htmlPath)) {
+      res.sendFile(htmlPath);
+    } else {
+      res.status(404).send(`UI not found at ${htmlPath}. Ensure the application is built.`);
+    }
   });
 
   // Explicitly handle GET for SSE connection and POST for messages, to avoid catching normal browser requests
@@ -49,7 +60,7 @@ export async function startStreamableHTTPServer(
       return;
     }
 
-    await handleMcpRequest(req, res);
+    await handleMcpRequest(req, res, createServerFn);
   });
 
   app.post("/mcp", async (req: Request, res: Response) => {
@@ -57,37 +68,50 @@ export async function startStreamableHTTPServer(
       res.status(404).send("MCP Server is disabled in ui-only mode.");
       return;
     }
-    await handleMcpRequest(req, res);
+    await handleMcpRequest(req, res, createServerFn);
   });
 
-  async function handleMcpRequest(req: Request, res: Response) {
+  return app;
+}
 
-    const server = createServer();
-    const transport = new StreamableHTTPServerTransport({
-      sessionIdGenerator: undefined,
-    });
+async function handleMcpRequest(req: Request, res: Response, createServerFn: () => McpServer) {
+  const server = createServerFn();
+  const transport = new StreamableHTTPServerTransport({
+    sessionIdGenerator: undefined,
+  });
 
-    res.on("close", () => {
-      transport.close().catch(() => {});
-      server.close().catch(() => {});
-    });
+  res.on("close", () => {
+    transport.close().catch(() => {});
+    server.close().catch(() => {});
+  });
 
-    try {
-      await server.connect(transport);
-      await transport.handleRequest(req, res, req.body);
-    } catch (error) {
-      console.error("MCP error:", error);
-      if (!res.headersSent) {
-        res.status(500).json({
-          jsonrpc: "2.0",
-          error: { code: -32603, message: "Internal server error" },
-          id: null,
-        });
-      }
+  try {
+    await server.connect(transport);
+    await transport.handleRequest(req, res, req.body);
+  } catch (error) {
+    console.error("MCP error:", error);
+    if (!res.headersSent) {
+      res.status(500).json({
+        jsonrpc: "2.0",
+        error: { code: -32603, message: "Internal server error" },
+        id: null,
+      });
     }
   }
+}
 
-  const httpServer = app.listen(port, (err) => {
+/**
+ * Starts an MCP server with Streamable HTTP transport in stateless mode.
+ *
+ * @param createServer - Factory function that creates a new McpServer instance per request.
+ */
+export async function startStreamableHTTPServer(
+  createServer: () => McpServer,
+): Promise<void> {
+  const port = parseInt(process.env.PORT ?? "3001", 10);
+  const app = buildApp(createServer);
+
+  const httpServer = app.listen(port, (err?: Error) => {
     if (err) {
       console.error("Failed to start server:", err);
       process.exit(1);

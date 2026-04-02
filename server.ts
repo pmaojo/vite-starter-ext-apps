@@ -44,7 +44,14 @@ export function createServer(): McpServer {
     resourceUri,
     { mimeType: RESOURCE_MIME_TYPE },
     async (): Promise<ReadResourceResult> => {
-      const html = await fs.readFile(path.join(DIST_DIR, "mcp-app.html"), "utf-8");
+      let htmlPath = path.join(DIST_DIR, "mcp-app.html");
+      try {
+        await fs.access(htmlPath);
+      } catch {
+        // Fallback for Vercel environments where process.cwd() might point to the root
+        htmlPath = path.join(process.cwd(), "dist", "mcp-app.html");
+      }
+      const html = await fs.readFile(htmlPath, "utf-8");
       return {
         contents: [{ uri: resourceUri, mimeType: RESOURCE_MIME_TYPE, text: html }],
       };
