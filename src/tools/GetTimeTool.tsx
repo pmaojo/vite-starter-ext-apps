@@ -20,11 +20,20 @@ interface GetTimeToolProps {
 export function GetTimeTool({ app, toolResult }: GetTimeToolProps) {
   const { t } = useTranslation();
 
-  // We can track the latest *manual* refresh result
+  // Keep track of the last seen toolResult from props so we know when the host sends a new one
+  const [lastHostResult, setLastHostResult] = useState<CallToolResult | null>(toolResult);
+  // Track our own manual refresh results
   const [manualResult, setManualResult] = useState<CallToolResult | null>(null);
   const [isError, setIsError] = useState(false);
 
-  // Directly derive the time from either a manual refresh or the initial tool result
+  // If the host passed down a new toolResult, override our manual result tracking
+  if (toolResult !== lastHostResult) {
+    setLastHostResult(toolResult);
+    setManualResult(null); // Clear manual result so host result takes precedence
+    setIsError(false);
+  }
+
+  // Derive the time from either a manual refresh (if present) or the host's tool result
   const activeResult = manualResult || toolResult;
   const timeText = extractTime(activeResult);
 

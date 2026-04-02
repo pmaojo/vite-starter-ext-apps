@@ -29,7 +29,12 @@ export async function startStreamableHTTPServer(
   // Serve static UI if in ui-only mode
   if (isUiOnly) {
     app.get("/", (req, res) => {
-      res.sendFile("mcp-app.html", { root: "dist" });
+      // Use absolute path relative to the module to prevent ENOENT when
+      // running from another directory.
+      const distPath = import.meta.filename.endsWith(".ts")
+        ? `${import.meta.dirname}/dist`
+        : import.meta.dirname;
+      res.sendFile(`${distPath}/mcp-app.html`);
     });
   }
 
