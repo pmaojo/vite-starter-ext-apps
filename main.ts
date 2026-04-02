@@ -47,8 +47,17 @@ export function buildApp(createServerFn: () => McpServer) {
     }
   });
 
+  // Intercept SSE / Streamable HTTP connections for Vercel
+  const handleVercelHeaders = (req: Request, res: Response, next: any) => {
+    // Vercel specific settings to allow SSE streaming to pass through properly
+    res.setHeader("Cache-Control", "no-cache, no-transform");
+    res.setHeader("Connection", "keep-alive");
+    res.setHeader("X-Accel-Buffering", "no"); // Prevent nginx from buffering
+    next();
+  };
+
   // Explicitly handle GET for SSE connection and POST for messages, to avoid catching normal browser requests
-  app.get("/mcp", async (req: Request, res: Response) => {
+  app.get("/mcp", handleVercelHeaders, async (req: Request, res: Response) => {
     if (isUiOnly) {
       res.status(404).send("MCP Server is disabled in ui-only mode.");
       return;
@@ -63,7 +72,7 @@ export function buildApp(createServerFn: () => McpServer) {
     await handleMcpRequest(req, res, createServerFn);
   });
 
-  app.post("/mcp", async (req: Request, res: Response) => {
+  app.post("/mcp", handleVercelHeaders, async (req: Request, res: Response) => {
     if (isUiOnly) {
       res.status(404).send("MCP Server is disabled in ui-only mode.");
       return;
