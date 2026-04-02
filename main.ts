@@ -26,21 +26,25 @@ export async function startStreamableHTTPServer(
   const app = createMcpExpressApp({ host: "0.0.0.0" });
   app.use(cors());
 
-  // Serve static UI if in ui-only mode
-  if (isUiOnly) {
-    app.get("/", (req, res) => {
-      // Use absolute path relative to the module to prevent ENOENT when
-      // running from another directory.
-      const distPath = import.meta.filename.endsWith(".ts")
-        ? `${import.meta.dirname}/dist`
-        : import.meta.dirname;
-      res.sendFile(`${distPath}/mcp-app.html`);
-    });
-  }
+  // Always serve the UI on / for convenience, even in full-stack mode.
+  app.get("/", (req, res) => {
+    // Use absolute path relative to the module to prevent ENOENT when
+    // running from another directory.
+    const distPath = import.meta.filename.endsWith(".ts")
+      ? `${import.meta.dirname}/dist`
+      : import.meta.dirname;
+    res.sendFile(`${distPath}/mcp-app.html`);
+  });
 
   app.all("/mcp", async (req: Request, res: Response) => {
     if (isUiOnly) {
       res.status(404).send("MCP Server is disabled in ui-only mode.");
+      return;
+    }
+
+    // Provide a friendly message if accessed directly via a browser without SSE headers
+    if (req.method === 'GET' && req.headers.accept && !req.headers.accept.includes('text/event-stream')) {
+      res.status(400).send("This endpoint is for MCP clients. It requires an SSE connection (text/event-stream) for GET requests or POST for messages.");
       return;
     }
     const server = createServer();

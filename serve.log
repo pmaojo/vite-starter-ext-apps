@@ -1,0 +1,11 @@
+
+> @modelcontextprotocol/server-basic-react@1.3.2 serve
+> bun --watch main.ts
+
+Warning: Server is binding to 0.0.0.0 without DNS rebinding protection. Consider using the allowedHosts option to restrict allowed hosts, or use authentication to protect your server.
+Failed to start server: error: Failed to start server. Is port 3001 in use?
+ syscall: "listen",
+   errno: 0,
+    code: "EADDRINUSE"
+
+      at serve (node:_http_server:554:41)

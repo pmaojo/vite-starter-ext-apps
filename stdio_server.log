@@ -1,0 +1,3 @@
+
+> @modelcontextprotocol/server-basic-react@1.3.2 serve:stdio
+> bun main.ts --stdio
