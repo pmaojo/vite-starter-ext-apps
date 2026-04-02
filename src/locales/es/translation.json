@@ -1,0 +1,15 @@
+{
+  "getTime": {
+    "title": "Herramienta de Hora",
+    "serverTime": "Hora del Servidor:",
+    "refresh": "Actualizar Hora",
+    "loading": "Cargando...",
+    "error": "[ERROR]"
+  },
+  "app": {
+    "connecting": "Conectando...",
+    "error": "ERROR:",
+    "noToolContext": "No se proporcionó contexto de herramienta. Esperando llamada a la herramienta...",
+    "toolNotFound": "No se encontró UI para la herramienta \"{{toolName}}\"."
+  }
+}

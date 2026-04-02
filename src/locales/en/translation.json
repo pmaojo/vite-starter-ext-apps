@@ -1,0 +1,15 @@
+{
+  "getTime": {
+    "title": "Get Time Tool",
+    "serverTime": "Server Time:",
+    "refresh": "Refresh Time",
+    "loading": "Loading...",
+    "error": "[ERROR]"
+  },
+  "app": {
+    "connecting": "Connecting...",
+    "error": "ERROR:",
+    "noToolContext": "No tool context provided. Waiting for tool call...",
+    "toolNotFound": "Tool UI for \"{{toolName}}\" not found."
+  }
+}
