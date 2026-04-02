@@ -38,6 +38,11 @@ export function createServer(): McpServer {
     },
   );
 
+  // Infer the base URL from Vercel environment variables, or fallback to localhost
+  const protocol = process.env.VERCEL_URL ? "https" : "http";
+  const host = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || `localhost:${process.env.PORT || 3001}`;
+  const baseURL = `${protocol}://${host}`;
+
   // Register the resource, which returns the bundled HTML/JavaScript for the UI.
   registerAppResource(server,
     resourceUri,
@@ -53,7 +58,19 @@ export function createServer(): McpServer {
       }
       const html = await fs.readFile(htmlPath, "utf-8");
       return {
-        contents: [{ uri: resourceUri, mimeType: RESOURCE_MIME_TYPE, text: html }],
+        contents: [{
+          uri: resourceUri,
+          mimeType: RESOURCE_MIME_TYPE,
+          text: html,
+          _meta: {
+            ui: {
+              csp: {
+                connectDomains: [baseURL],
+                resourceDomains: [baseURL],
+              },
+            },
+          },
+        }],
       };
     },
   );
