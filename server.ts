@@ -3,6 +3,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult, ReadResourceResult } from "@modelcontextprotocol/sdk/types.js";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { createMcpHandler } from "mcp-handler";
 
 // Works both from source (server.ts) and compiled (dist/server.js)
 const DIST_DIR = import.meta.filename.endsWith(".ts")
@@ -10,14 +11,9 @@ const DIST_DIR = import.meta.filename.endsWith(".ts")
   : import.meta.dirname;
 
 /**
- * Creates a new MCP server instance with tools and resources registered.
+ * Common configuration logic to setup tools and resources on any given server instance.
  */
-export function createServer(): McpServer {
-  const server = new McpServer({
-    name: "Basic MCP App Server (React)",
-    version: "1.0.0",
-  });
-
+function configureServer(server: McpServer) {
   // Two-part registration: tool + resource, tied together by the resource URI.
   const resourceUri = "ui://get-time/mcp-app.html";
 
@@ -74,6 +70,27 @@ export function createServer(): McpServer {
       };
     },
   );
+}
 
+/**
+ * Creates a new MCP server instance with tools and resources registered.
+ */
+export function createServer(): McpServer {
+  const server = new McpServer({
+    name: "Basic MCP App Server (React)",
+    version: "1.0.0",
+  });
+
+  configureServer(server);
   return server;
 }
+
+// Re-export standard handler for integration
+export const mcpHandler = createMcpHandler(async (server: McpServer) => {
+    configureServer(server);
+}, {
+  serverInfo: {
+    name: "Basic MCP App Server (React)",
+    version: "1.0.0",
+  }
+});
