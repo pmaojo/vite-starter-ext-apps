@@ -74,28 +74,63 @@ export function buildApp(createServerFn: () => McpServer) {
   return app;
 }
 
+import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
+
+const serverStore = new Map<string, { server: McpServer, transport: SSEServerTransport }>();
+
 async function handleMcpRequest(req: Request, res: Response, createServerFn: () => McpServer) {
-  const server = createServerFn();
-  const transport = new StreamableHTTPServerTransport({
-    sessionIdGenerator: undefined,
-  });
+  if (req.method === "GET") {
+    const server = createServerFn();
+    const transport = new SSEServerTransport("/mcp", res);
 
-  res.on("close", () => {
-    transport.close().catch(() => {});
-    server.close().catch(() => {});
-  });
+    // We store the connection for POST requests to route messages to
+    // using the auto-generated sessionId from SSEServerTransport
+    const sessionId = transport.sessionId;
+    serverStore.set(sessionId, { server, transport });
 
-  try {
-    await server.connect(transport);
-    await transport.handleRequest(req, res, req.body);
-  } catch (error) {
-    console.error("MCP error:", error);
-    if (!res.headersSent) {
-      res.status(500).json({
-        jsonrpc: "2.0",
-        error: { code: -32603, message: "Internal server error" },
-        id: null,
-      });
+    res.on("close", () => {
+      serverStore.delete(sessionId);
+      transport.close().catch(() => {});
+      server.close().catch(() => {});
+    });
+
+    try {
+      await server.connect(transport);
+    } catch (error) {
+      console.error("MCP error:", error);
+      if (!res.headersSent) {
+        res.status(500).json({
+          jsonrpc: "2.0",
+          error: { code: -32603, message: "Internal server error" },
+          id: null,
+        });
+      }
+    }
+  } else if (req.method === "POST") {
+    const sessionId = req.query.sessionId as string;
+
+    if (!sessionId) {
+      res.status(400).send("Missing sessionId parameter");
+      return;
+    }
+
+    const connection = serverStore.get(sessionId);
+    if (!connection) {
+      res.status(404).send("Session not found");
+      return;
+    }
+
+    try {
+      await connection.transport.handlePostMessage(req, res);
+    } catch (error) {
+      console.error("MCP POST error:", error);
+      if (!res.headersSent) {
+        res.status(500).json({
+          jsonrpc: "2.0",
+          error: { code: -32603, message: "Internal server error" },
+          id: null,
+        });
+      }
     }
   }
 }
