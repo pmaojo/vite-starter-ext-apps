@@ -73,3 +73,16 @@ npm run dev
 ## Build System
 
 This example bundles into a single HTML file using Vite with `vite-plugin-singlefile` — see [`vite.config.ts`](vite.config.ts). This allows all UI content to be served as a single MCP resource. Alternatively, MCP apps can load external resources by defining [`_meta.ui.csp.resourceDomains`](https://apps.extensions.modelcontextprotocol.io/api/interfaces/app.McpUiResourceCsp.html#resourcedomains) in the UI resource metadata.
+
+## Deployment Notes
+
+### Serverless Environments (Vercel, Netlify, AWS Lambda)
+**This application is NOT compatible with stateless Serverless Functions (e.g., Vercel) by default.**
+
+MCP utilizes long-lived HTTP SSE (Server-Sent Events) connections to maintain persistent state between the client and the server. Serverless environments usually implement strict execution timeouts and destroy memory state between function invocations, breaking the SSE streams.
+
+For production deployments, we strongly recommend deploying this template to a traditional, long-running Node.js environment. Examples include:
+- **Render** (Web Services)
+- **Railway**
+- **Heroku**
+- **DigitalOcean App Platform** or a VPS
