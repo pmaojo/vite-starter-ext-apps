@@ -3,11 +3,12 @@
  */
 import { useApp } from "@modelcontextprotocol/ext-apps/react";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import { StrictMode, useState, useSyncExternalStore } from "react";
+import { StrictMode, useState, useSyncExternalStore, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { useTranslation } from "react-i18next";
 import { logger } from "./lib/logger";
 import { GetTimeTool } from "./tools/GetTimeTool";
+import { Toaster } from "./components/ui/sonner";
 import "./i18n";
 import "./index.css";
 
@@ -29,23 +30,23 @@ function MainApp() {
     onAppCreated: (app) => {
       logger.setApp(app);
       app.onteardown = async () => {
-        logger.info("App is being torn down");
+        logger.info(t('app.logs.teardown', "App is being torn down"));
         return {};
       };
       app.ontoolinput = async (input) => {
-        logger.info("Received tool call input:", input);
+        logger.info(t('app.logs.toolInput', "Received tool call input"), input);
       };
 
       app.ontoolresult = async (result) => {
-        logger.info("Received tool call result:", result);
+        logger.info(t('app.logs.toolResult', "Received tool call result"), result);
         setToolResult(result);
       };
 
       app.ontoolcancelled = (params) => {
-        logger.info("Tool call cancelled:", params.reason);
+        logger.warn(t('app.logs.toolCancelled', "Tool call cancelled"), { reason: params.reason });
       };
 
-      app.onerror = (e) => logger.error("App Error", e);
+      app.onerror = (e) => logger.error(t('app.logs.error', "App Error"), e);
     },
   });
 
@@ -61,8 +62,14 @@ function MainApp() {
     () => undefined // Server snapshot
   );
 
-  if (error) return <div><strong>{t('app.error')}</strong> {error.message}</div>;
-  if (!app) return <div>{t('app.connecting')}</div>;
+  useEffect(() => {
+    if (error) {
+      logger.error(t('app.logs.error', "App Error"), error.message);
+    }
+  }, [error, t]);
+
+  if (error) return <div className="p-4 text-destructive flex flex-col items-center justify-center h-screen"><strong>{t('app.error')}</strong> {error.message}</div>;
+  if (!app) return <div className="p-4 flex items-center justify-center h-screen text-muted-foreground">{t('app.connecting')}</div>;
 
   const toolName = hostContext?.toolInfo?.tool?.name;
 
@@ -83,5 +90,6 @@ function MainApp() {
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <MainApp />
+    <Toaster />
   </StrictMode>,
 );
