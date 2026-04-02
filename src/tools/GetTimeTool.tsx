@@ -1,9 +1,9 @@
-import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { App, McpUiHostContext } from "@modelcontextprotocol/ext-apps";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useServerTool } from "../hooks/useServerTool";
+import type { ToolComponentProps } from "./registry";
 
 function extractTime(callToolResult: CallToolResult | null | undefined): string | null {
   if (!callToolResult) return null;
@@ -11,45 +11,20 @@ function extractTime(callToolResult: CallToolResult | null | undefined): string 
   return content?.text ?? null;
 }
 
-interface GetTimeToolProps {
-  app: App;
-  toolResult: CallToolResult | null;
-  hostContext?: McpUiHostContext;
-}
-
-export function GetTimeTool({ app, toolResult }: GetTimeToolProps) {
+export function GetTimeTool({ app, toolResult }: ToolComponentProps) {
   const { t } = useTranslation();
 
-  // Keep track of the last seen toolResult from props so we know when the host sends a new one
-  const [lastHostResult, setLastHostResult] = useState<CallToolResult | null>(toolResult);
-  // Track our own manual refresh results
-  const [manualResult, setManualResult] = useState<CallToolResult | null>(null);
-  const [isError, setIsError] = useState(false);
+  const { activeResult, isError, isLoading, executeTool } = useServerTool(
+    app,
+    "get-time",
+    toolResult
+  );
 
-  // If the host passed down a new toolResult, override our manual result tracking
-  if (toolResult !== lastHostResult) {
-    setLastHostResult(toolResult);
-    setManualResult(null); // Clear manual result so host result takes precedence
-    setIsError(false);
-  }
-
-  // Derive the time from either a manual refresh (if present) or the host's tool result
-  const activeResult = manualResult || toolResult;
   const timeText = extractTime(activeResult);
 
   const serverTimeDisplay = isError
     ? t("getTime.error")
     : (timeText || t("getTime.loading"));
-
-  const handleGetTime = useCallback(async () => {
-    try {
-      setIsError(false);
-      const result = await app.callServerTool({ name: "get-time", arguments: {} });
-      setManualResult(result as CallToolResult);
-    } catch (e) {
-      setIsError(true);
-    }
-  }, [app]);
 
   return (
     <Card className="w-full max-w-md mx-auto mt-8">
@@ -61,7 +36,13 @@ export function GetTimeTool({ app, toolResult }: GetTimeToolProps) {
         <p className="text-2xl font-mono">{serverTimeDisplay}</p>
       </CardContent>
       <CardFooter>
-        <Button onClick={handleGetTime} className="w-full">{t("getTime.refresh")}</Button>
+        <Button
+          onClick={() => executeTool({})}
+          disabled={isLoading}
+          className="w-full"
+        >
+          {isLoading ? t("getTime.loading") : t("getTime.refresh")}
+        </Button>
       </CardFooter>
     </Card>
   );

@@ -26,23 +26,42 @@ export async function startStreamableHTTPServer(
   const app = createMcpExpressApp({ host: "0.0.0.0" });
   app.use(cors());
 
-  // Serve static UI if in ui-only mode
-  if (isUiOnly) {
-    app.get("/", (req, res) => {
-      // Use absolute path relative to the module to prevent ENOENT when
-      // running from another directory.
-      const distPath = import.meta.filename.endsWith(".ts")
-        ? `${import.meta.dirname}/dist`
-        : import.meta.dirname;
-      res.sendFile(`${distPath}/mcp-app.html`);
-    });
-  }
+  // Always serve the UI on / for convenience, even in full-stack mode.
+  app.get("/", (req, res) => {
+    // Use absolute path relative to the module to prevent ENOENT when
+    // running from another directory.
+    const distPath = import.meta.filename.endsWith(".ts")
+      ? `${import.meta.dirname}/dist`
+      : import.meta.dirname;
+    res.sendFile(`${distPath}/mcp-app.html`);
+  });
 
-  app.all("/mcp", async (req: Request, res: Response) => {
+  // Explicitly handle GET for SSE connection and POST for messages, to avoid catching normal browser requests
+  app.get("/mcp", async (req: Request, res: Response) => {
     if (isUiOnly) {
       res.status(404).send("MCP Server is disabled in ui-only mode.");
       return;
     }
+
+    // Only reject if it's explicitly html to provide a helpful browser message
+    if (req.headers.accept?.includes("text/html")) {
+      res.status(400).send("This endpoint is for MCP clients. It requires an SSE connection (text/event-stream) for GET requests or POST for messages.");
+      return;
+    }
+
+    await handleMcpRequest(req, res);
+  });
+
+  app.post("/mcp", async (req: Request, res: Response) => {
+    if (isUiOnly) {
+      res.status(404).send("MCP Server is disabled in ui-only mode.");
+      return;
+    }
+    await handleMcpRequest(req, res);
+  });
+
+  async function handleMcpRequest(req: Request, res: Response) {
+
     const server = createServer();
     const transport = new StreamableHTTPServerTransport({
       sessionIdGenerator: undefined,
@@ -66,7 +85,7 @@ export async function startStreamableHTTPServer(
         });
       }
     }
-  });
+  }
 
   const httpServer = app.listen(port, (err) => {
     if (err) {
