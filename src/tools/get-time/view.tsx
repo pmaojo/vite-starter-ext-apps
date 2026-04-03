@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { useServerTool } from "../hooks/useServerTool";
-import type { ToolComponentProps } from "./registry";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { useServerTool } from "@/shared/hooks/useServerTool";
+import type { ToolComponentProps } from "@/core/framework/tool-contract";
 
 function extractTime(callToolResult: CallToolResult | null | undefined): string | null {
   if (!callToolResult) return null;
