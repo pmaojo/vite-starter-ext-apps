@@ -16,12 +16,27 @@ type FileEntry = z.infer<typeof FileEntrySchema>;
 
 const ListFilesResponseSchema = z.array(FileEntrySchema);
 
+/**
+ * File Explorer Tool View.
+ *
+ * @description
+ * This component demonstrates the frontend capability of invoking server-side logic
+ * through the `callServerTool` API provided by the MCP Apps SDK.
+ * This is a didactic implementation created for demo purposes to illustrate
+ * secure, sandboxed directory browsing.
+ *
+ * @param {ToolComponentProps} props - The standard props injected by the App router.
+ */
 export function FileExplorerView({ app }: ToolComponentProps) {
   const [currentPath, setCurrentPath] = useState("");
   const [files, setFiles] = useState<FileEntry[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  /**
+   * Fetches directory contents from the backend.
+   * Demonstrates the `callServerTool` SDK capability.
+   */
   const fetchFiles = async (subpath: string) => {
     if (!app) return;
     setIsLoading(true);

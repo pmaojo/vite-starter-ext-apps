@@ -13,14 +13,30 @@ const DIST_DIR = import.meta.filename.endsWith(".ts")
 
 /**
  * Common configuration logic to setup tools and resources on any given server instance.
+ *
+ * @description
+ * This file serves as the backend configuration for the MCP Apps SDK.
+ * It demonstrates how to register tools with UI metadata (`_meta.ui.resourceUri`)
+ * so that the MCP host knows to render an interactive frontend UI when the tool is called.
+ *
+ * Note: The tools registered here (`get-time`, `host-bridge`, `list-files`) are for demo
+ * purposes only and are intended to act as a didactic starter for developers mastering
+ * the `modelcontextprotocol/ext-apps` SDK.
+ *
+ * @param {McpServer} server - The core MCP server instance.
  */
 function configureServer(server: McpServer) {
   // Two-part registration: tool + resource, tied together by the resource URI.
   const resourceUri = "ui://get-time/mcp-app.html";
 
-  // Register a tool with UI metadata. When the host calls this tool, it reads
-  // `_meta.ui.resourceUri` to know which resource to fetch and render as an
-  // interactive UI.
+  /**
+   * Register a tool with UI metadata.
+   *
+   * @description
+   * When the host calls this tool, it reads the `_meta.ui.resourceUri` to know
+   * which resource to fetch and render as an interactive UI.
+   * This specific tool is for demo purposes to show how to retrieve server state.
+   */
   registerAppTool(server,
     "get-time",
     {
@@ -35,6 +51,14 @@ function configureServer(server: McpServer) {
     },
   );
 
+  /**
+   * Register the Host Bridge tool.
+   *
+   * @description
+   * This demo tool illustrates how the frontend can communicate back to the host.
+   * Capabilities demonstrated include `sendMessage`, `sendLog`, `openLink`,
+   * `downloadFile`, `requestTeardown`, and `requestDisplayMode`.
+   */
   registerAppTool(server,
     "host-bridge",
     {
@@ -48,8 +72,14 @@ function configureServer(server: McpServer) {
     },
   );
 
-  // File Explorer Tool
-  // This demonstrates a server-side capability that the frontend can call via callServerTool
+  /**
+   * File Explorer Tool.
+   *
+   * @description
+   * This demonstrates a server-side capability that the frontend UI can invoke
+   * via the MCP Apps SDK `callServerTool` function. It allows the React frontend
+   * to securely request directory listings. This tool is for demo purposes.
+   */
   registerAppTool(server,
     "list-files",
     {
@@ -104,7 +134,15 @@ function configureServer(server: McpServer) {
   const host = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || `localhost:${process.env.PORT || 3001}`;
   const baseURL = `${protocol}://${host}`;
 
-  // Register the resource, which returns the bundled HTML/JavaScript for the UI.
+  /**
+   * Register the UI Resource.
+   *
+   * @description
+   * The resource returns the bundled HTML/JavaScript for the React UI.
+   * The MCP host uses this payload to render the application in a secure sandboxed iframe.
+   * The CSP policies defined here ensure proper domain access control.
+   * This is a didactic demo implementation for a single-page React app.
+   */
   registerAppResource(server,
     resourceUri,
     resourceUri,
