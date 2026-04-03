@@ -61,11 +61,22 @@ const McpContext = createContext<McpContextValue | undefined>(undefined);
  * MCP Context Provider.
  *
  * @description
- * This component acts as the global state container for the MCP Apps SDK, utilizing
- * the `useApp` hook from `@modelcontextprotocol/ext-apps/react`.
- * It manages connection state, host context, and tool execution results.
- * This file serves as a didactic starter demonstrating how to integrate the MCP
- * frontend API. Note that the tools rendered within are for demo purposes.
+ * This component establishes the foundation for the frontend MCP layer. It encapsulates the complex
+ * lifecycle of an MCP application connection and exposes a simplified, reactive context for React components.
+ *
+ * Architectural Highlights:
+ * 1. **`useApp` Integration:** Strictly adheres to SDK standards by utilizing `@modelcontextprotocol/ext-apps/react`'s
+ *    `useApp` hook rather than manually managing the WebSocket/bridge connection.
+ * 2. **State Synchronization:** Due to potential module re-evaluations (HMR) and the fact that the host bridge
+ *    dispatches tool results only once, it utilizes a memory-backed session cache and `useSyncExternalStore`
+ *    to ensure reliable, concurrent-safe reads of the `toolResult`.
+ * 3. **Global Event Bridging:** Catches low-level SDK events (`onhostcontextchanged`, `ontoolresult`) and
+ *    maps them into standard React state.
+ *
+ * Note: This implementation acts as a robust didactic starter illustrating best practices for managing
+ * async state and host environment boundaries within MCP Apps.
+ *
+ * @see {@link https://github.com/modelcontextprotocol/ext-apps} for core concepts.
  */
 export function McpProvider({ children }: { children: ReactNode }) {
   const { t } = useTranslation();
