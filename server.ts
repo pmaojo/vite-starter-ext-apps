@@ -4,6 +4,7 @@ import type { CallToolResult, ReadResourceResult } from "@modelcontextprotocol/s
 import fs from "node:fs/promises";
 import path from "node:path";
 import { createMcpHandler } from "mcp-handler";
+import { z } from "zod";
 
 // Works both from source (server.ts) and compiled (dist/server.js)
 const DIST_DIR = import.meta.filename.endsWith(".ts")
@@ -25,7 +26,7 @@ function configureServer(server: McpServer) {
     {
       title: "Get Time",
       description: "Returns the current server time as an ISO 8601 string.",
-      inputSchema: {},
+      inputSchema: z.object({}),
       _meta: { ui: { resourceUri } }, // Links this tool to its UI resource
     },
     async (): Promise<CallToolResult> => {
@@ -39,7 +40,7 @@ function configureServer(server: McpServer) {
     {
       title: "Host Bridge",
       description: "Demonstrates frontend SDK capabilities like sendMessage, sendLog, and openLink.",
-      inputSchema: {},
+      inputSchema: z.object({}),
       _meta: { ui: { resourceUri } },
     },
     async (): Promise<CallToolResult> => {
@@ -54,15 +55,9 @@ function configureServer(server: McpServer) {
     {
       title: "List Files",
       description: "Lists files in the sandbox directory.",
-      inputSchema: {
-        type: "object",
-        properties: {
-          subpath: {
-            type: "string",
-            description: "Optional subpath within the sandbox to list.",
-          }
-        }
-      } as any,
+      inputSchema: z.object({
+        subpath: z.string().optional().describe("Optional subpath within the sandbox to list."),
+      }),
       _meta: { ui: { resourceUri } },
     },
     async (request: any): Promise<CallToolResult> => {
