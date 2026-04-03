@@ -12,18 +12,25 @@ const DIST_DIR = import.meta.filename.endsWith(".ts")
   : import.meta.dirname;
 
 /**
- * Common configuration logic to setup tools and resources on any given server instance.
+ * Core server configuration and tool registration for the MCP application.
  *
  * @description
- * This file serves as the backend configuration for the MCP Apps SDK.
- * It demonstrates how to register tools with UI metadata (`_meta.ui.resourceUri`)
- * so that the MCP host knows to render an interactive frontend UI when the tool is called.
+ * This module is the entry point for configuring the Model Context Protocol (MCP) server.
+ * It demonstrates how to properly integrate `@modelcontextprotocol/sdk` and `@modelcontextprotocol/ext-apps/server`
+ * to provide both raw tool logic and an interactive User Interface.
  *
- * Note: The tools registered here (`get-time`, `host-bridge`, `list-files`) are for demo
- * purposes only and are intended to act as a didactic starter for developers mastering
- * the `modelcontextprotocol/ext-apps` SDK.
+ * Key Architectural Concepts demonstrated here:
+ * 1. **Resource Registration:** The React UI bundled via Vite is served directly to the MCP host as an MCP Resource.
+ * 2. **Tool Registration with UI Metadata:** By supplying `_meta.ui.resourceUri`, we signal to the host that
+ *    a specific tool has an associated frontend component, allowing the host to render the interactive React UI
+ *    when the tool is invoked by an LLM.
+ * 3. **Schema Validation:** Zod (`z.object`) is strictly used for defining `inputSchema`. This ensures type-safe
+ *    arguments from the LLM and guarantees compatibility with internal SDK validators.
  *
- * @param {McpServer} server - The core MCP server instance.
+ * Note: The implementations provided (`get-time`, `host-bridge`, `list-files`) are didactic examples designed
+ * to guide developers on structuring robust, production-ready MCP applications.
+ *
+ * @param {McpServer} server - The core MCP server instance to be configured.
  */
 function configureServer(server: McpServer) {
   // Two-part registration: tool + resource, tied together by the resource URI.

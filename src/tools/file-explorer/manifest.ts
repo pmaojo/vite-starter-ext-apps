@@ -1,3 +1,13 @@
+/**
+ * @file Sandbox File Explorer Tool Manifest
+ *
+ * @description
+ * Declares the File Explorer tool metadata.
+ * Notice how `slug: "list-files"` strictly maps to the server-side registration
+ * `registerAppTool(server, "list-files", ...)` in `server.ts`.
+ * This tool implementation demonstrates complex server-client interactions requiring
+ * the `callServerTool` permission.
+ */
 import type { ToolManifest } from "@/core/framework/tool-contract";
 import { FileExplorerView } from "./view";
 

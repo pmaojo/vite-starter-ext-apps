@@ -20,10 +20,20 @@ const ListFilesResponseSchema = z.array(FileEntrySchema);
  * File Explorer Tool View.
  *
  * @description
- * This component demonstrates the frontend capability of invoking server-side logic
- * through the `callServerTool` API provided by the MCP Apps SDK.
- * This is a didactic implementation created for demo purposes to illustrate
- * secure, sandboxed directory browsing.
+ * This React component demonstrates advanced frontend-to-backend communication
+ * through the MCP Apps SDK. It acts as the interactive UI for the `list-files` tool.
+ *
+ * Architectural Focus:
+ * - **`callServerTool` API:** Demonstrates how the frontend can asynchronously invoke
+ *   server-side logic bypassing standard HTTP fetches, relying entirely on the MCP bridge.
+ * - **Zod Integration:** Notice the usage of `ListFilesResponseSchema.parse()`. Since
+ *   the transport layer (MCP) returns dynamic payloads, validating the shape of the
+ *   response on the client side using Zod ensures strict type safety and prevents silent UI failures.
+ * - **Shadcn UI:** Uses standard enterprise-grade components (`Card`, `Button`) from
+ *   the `@/shared/components` directory.
+ *
+ * Note: This is a didactic implementation created for demo purposes to illustrate
+ * secure, sandboxed directory browsing over MCP.
  *
  * @param {ToolComponentProps} props - The standard props injected by the App router.
  */
