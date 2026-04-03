@@ -1,13 +1,18 @@
-import type { App, McpUiHostContext } from "@modelcontextprotocol/ext-apps";
-import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import { GetTimeTool } from "./GetTimeTool";
+import type { ToolManifest } from "../core/framework/tool-contract";
+import { getTimeManifest } from "./get-time/manifest";
+import { hostBridgeManifest } from "./host-bridge/manifest";
+import { fileExplorerManifest } from "./file-explorer/manifest";
 
-export interface ToolComponentProps {
-  app: App | null;
-  toolResult: CallToolResult | null;
-  hostContext?: McpUiHostContext;
-}
+const manifests: ToolManifest[] = [
+  getTimeManifest,
+  hostBridgeManifest,
+  fileExplorerManifest,
+];
 
-export const TOOL_COMPONENTS: Record<string, React.ComponentType<ToolComponentProps>> = {
-  "get-time": GetTimeTool,
-};
+export const TOOL_COMPONENTS: Record<string, ToolManifest["component"]> = manifests.reduce(
+  (acc, manifest) => {
+    acc[manifest.slug] = manifest.component;
+    return acc;
+  },
+  {} as Record<string, ToolManifest["component"]>
+);

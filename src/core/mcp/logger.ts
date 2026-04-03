@@ -1,6 +1,11 @@
 import type { App } from "@modelcontextprotocol/ext-apps";
 import { toast } from "sonner";
-import type { LogMessage } from "../types";
+
+export interface LogMessage {
+  level: "debug" | "info" | "warn" | "error";
+  message: string;
+  data?: any;
+}
 
 let _app: App | null = null;
 

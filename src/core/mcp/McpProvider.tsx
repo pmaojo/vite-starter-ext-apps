@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, useCallback, useSyncExternalStore, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { logger } from "../lib/logger";
+import { logger } from "./logger";
 import { useApp } from "@modelcontextprotocol/ext-apps/react";
 import type { App, McpUiHostContext } from "@modelcontextprotocol/ext-apps";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";

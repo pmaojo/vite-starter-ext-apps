@@ -34,6 +34,76 @@ function configureServer(server: McpServer) {
     },
   );
 
+  registerAppTool(server,
+    "host-bridge",
+    {
+      title: "Host Bridge",
+      description: "Demonstrates frontend SDK capabilities like sendMessage, sendLog, and openLink.",
+      inputSchema: {},
+      _meta: { ui: { resourceUri } },
+    },
+    async (): Promise<CallToolResult> => {
+      return { content: [{ type: "text", text: "Host Bridge initialized. Please interact with the UI." }] };
+    },
+  );
+
+  // File Explorer Tool
+  // This demonstrates a server-side capability that the frontend can call via callServerTool
+  registerAppTool(server,
+    "list-files",
+    {
+      title: "List Files",
+      description: "Lists files in the sandbox directory.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          subpath: {
+            type: "string",
+            description: "Optional subpath within the sandbox to list.",
+          }
+        }
+      } as any,
+      _meta: { ui: { resourceUri } },
+    },
+    async (request: any): Promise<CallToolResult> => {
+      const sandboxDir = path.resolve(process.cwd(), "mcp-sandbox");
+      const requestSubpath = request.params?.arguments?.subpath as string || "";
+      const targetPath = path.resolve(sandboxDir, requestSubpath);
+
+      // Security check: strictly validate the path starts with sandboxDir
+      if (!targetPath.startsWith(sandboxDir)) {
+         return {
+           isError: true,
+           content: [{ type: "text", text: "Security Error: Path traversal detected. Access denied." }]
+         };
+      }
+
+      try {
+        const stats = await fs.stat(targetPath);
+        if (!stats.isDirectory()) {
+          return {
+             isError: true,
+             content: [{ type: "text", text: "Error: Target is not a directory." }]
+          };
+        }
+
+        const entries = await fs.readdir(targetPath, { withFileTypes: true });
+        const files = entries.map(entry => ({
+          name: entry.name,
+          isDirectory: entry.isDirectory(),
+          path: path.relative(sandboxDir, path.join(targetPath, entry.name))
+        }));
+
+        return { content: [{ type: "text", text: JSON.stringify(files) }] };
+      } catch (error: any) {
+        return {
+           isError: true,
+           content: [{ type: "text", text: `Error reading directory: ${error.message}` }]
+        };
+      }
+    },
+  );
+
   // Infer the base URL from Vercel environment variables, or fallback to localhost
   const protocol = process.env.VERCEL_URL ? "https" : "http";
   const host = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || `localhost:${process.env.PORT || 3001}`;

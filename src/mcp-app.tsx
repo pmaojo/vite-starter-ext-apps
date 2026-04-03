@@ -4,8 +4,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { useTranslation } from "react-i18next";
-import { Toaster } from "./components/ui/sonner";
-import { McpProvider, useMcp } from "./providers/McpProvider";
+import { Toaster } from "./shared/components/ui/sonner";
+import { McpProvider, useMcp } from "./core/mcp/McpProvider";
 import { TOOL_COMPONENTS } from "./tools/registry";
 import "./i18n";
 import "./index.css";
