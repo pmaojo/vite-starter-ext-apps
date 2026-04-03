@@ -6,11 +6,6 @@ import path from "node:path";
 import { createMcpHandler } from "mcp-handler";
 import { z } from "zod";
 
-// Works both from source (server.ts) and compiled (dist/server.js)
-const DIST_DIR = import.meta.filename.endsWith(".ts")
-  ? path.join(import.meta.dirname, "dist")
-  : import.meta.dirname;
-
 /**
  * Core server configuration and tool registration for the MCP application.
  *
@@ -155,14 +150,14 @@ function configureServer(server: McpServer) {
     resourceUri,
     { mimeType: RESOURCE_MIME_TYPE },
     async (): Promise<ReadResourceResult> => {
-      let htmlPath = path.join(DIST_DIR, "mcp-app.html");
-      try {
-        await fs.access(htmlPath);
-      } catch {
-        // Fallback for Vercel environments where process.cwd() might point to the root
-        htmlPath = path.join(process.cwd(), "dist", "mcp-app.html");
+      // Fetch the UI HTML dynamically via HTTP instead of reading the file system directly.
+      // This matches Next.js patterns and ensures the HTML is processed correctly through the server.
+      const res = await fetch(`${baseURL}/`);
+      if (!res.ok) {
+        throw new Error(`Failed to fetch UI from ${baseURL}/: ${res.statusText}`);
       }
-      const html = await fs.readFile(htmlPath, "utf-8");
+      const html = await res.text();
+
       return {
         contents: [{
           uri: resourceUri,
