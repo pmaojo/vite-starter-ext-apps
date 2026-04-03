@@ -57,6 +57,16 @@ interface McpContextValue {
 
 const McpContext = createContext<McpContextValue | undefined>(undefined);
 
+/**
+ * MCP Context Provider.
+ *
+ * @description
+ * This component acts as the global state container for the MCP Apps SDK, utilizing
+ * the `useApp` hook from `@modelcontextprotocol/ext-apps/react`.
+ * It manages connection state, host context, and tool execution results.
+ * This file serves as a didactic starter demonstrating how to integrate the MCP
+ * frontend API. Note that the tools rendered within are for demo purposes.
+ */
 export function McpProvider({ children }: { children: ReactNode }) {
   const { t } = useTranslation();
 
@@ -66,15 +76,22 @@ export function McpProvider({ children }: { children: ReactNode }) {
   // We sync toolResult with external store because of session storage and HMR
   const toolResult = useSyncExternalStore(subscribe, () => memToolResult, () => null);
 
+  /**
+   * App lifecycle and event callbacks setup.
+   * @param {App} newApp The initialized app instance provided by the SDK.
+   */
   const onAppCreated = useCallback((newApp: App) => {
+    // Graceful termination handler
     newApp.onteardown = async () => {
       return {};
     };
 
+    // Fired when the user interacts with the app inputs
     newApp.ontoolinput = async (input) => {
       logger.info("Received tool call input", input);
     };
 
+    // Stores the latest tool execution result dispatched by the host
     newApp.ontoolresult = async (result) => {
       logger.info("Received tool call result", result);
       memToolResult = result as CallToolResult;
@@ -82,14 +99,17 @@ export function McpProvider({ children }: { children: ReactNode }) {
       notify();
     };
 
+    // Handled when a tool invocation is cancelled by the user or host
     newApp.ontoolcancelled = (params) => {
       logger.warn("Tool call cancelled", { reason: params.reason });
     };
 
+    // Global connection error handler
     newApp.onerror = (e) => {
       console.error("[mcp-app] error:", e);
     };
 
+    // Keeps our React state in sync with changes to the host environment
     newApp.onhostcontextchanged = () => {
       setHostContext(newApp.getHostContext());
     };
@@ -98,6 +118,9 @@ export function McpProvider({ children }: { children: ReactNode }) {
     logger.setApp(newApp);
   }, []);
 
+  /**
+   * The core SDK hook initializing the frontend application.
+   */
   const { app, error } = useApp({
     appInfo: { name: "Dynamic MCP App", version: "1.0.0" },
     capabilities: {},

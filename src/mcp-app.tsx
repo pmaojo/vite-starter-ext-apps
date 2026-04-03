@@ -10,6 +10,16 @@ import { TOOL_COMPONENTS } from "./tools/registry";
 import "./i18n";
 import "./index.css";
 
+/**
+ * Main Content Component.
+ *
+ * @description
+ * This component acts as the router for the MCP application.
+ * It reads the `toolName` provided by the host context and renders
+ * the corresponding tool component from the registry.
+ * Note: This application is a didactic starter, and the tools shown
+ * are for demo purposes to illustrate SDK usage.
+ */
 function AppContent() {
   const { t } = useTranslation();
   const { app, error, hostContext, toolResult } = useMcp();
@@ -30,12 +40,14 @@ function AppContent() {
     );
   }
 
+  // Extract the tool name injected by the host environment context
   const toolName = hostContext?.toolInfo?.tool?.name;
 
   if (!toolName) {
     return <div>{t('app.noToolContext')}</div>;
   }
 
+  // Look up the corresponding tool UI registered in the system
   const ToolComponent = TOOL_COMPONENTS[toolName];
 
   if (!ToolComponent) {

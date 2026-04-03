@@ -11,6 +11,16 @@ function extractTime(callToolResult: CallToolResult | null | undefined): string 
   return content?.text ?? null;
 }
 
+/**
+ * Get Time Tool View.
+ *
+ * @description
+ * This component demonstrates handling server tool executions and extracting
+ * the result dispatched from the backend. It uses a custom hook `useServerTool`
+ * to fetch and maintain state. This is a didactic starter component for demo purposes.
+ *
+ * @param {ToolComponentProps} props - The standard props injected by the App router.
+ */
 export function GetTimeTool({ app, toolResult }: ToolComponentProps) {
   const { t } = useTranslation();
 
