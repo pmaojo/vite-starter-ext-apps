@@ -2,11 +2,31 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/api/ui"
+      "destination": "/mcp-app.html"
     },
     {
       "source": "/mcp",
       "destination": "/api/index"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/mcp-app.html",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        }
+      ]
     }
   ]
 }
