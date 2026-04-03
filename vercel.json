@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/mcp-app.html"
+      "destination": "/api/ui"
     },
     {
       "source": "/mcp",
