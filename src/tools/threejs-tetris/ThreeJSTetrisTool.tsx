@@ -1,35 +1,27 @@
 import { Maximize, Minimize } from "lucide-react";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import { Button } from "../../shared/components/ui/button";
+import { toast } from "sonner";
 import Tetris from "./pages/Tetris";
 import "./app.scss";
 
 import type { ToolComponentProps } from "../../core/framework/tool-contract";
 
-export const ThreeJSTetrisTool: React.FC<ToolComponentProps> = () => {
+export const ThreeJSTetrisTool: React.FC<ToolComponentProps> = ({ app, hostContext }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isFullscreen, setIsFullscreen] = useState(false);
 
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-
-    document.addEventListener("fullscreenchange", handleFullscreenChange);
-    return () => {
-      document.removeEventListener("fullscreenchange", handleFullscreenChange);
-    };
-  }, []);
+  const isFullscreen = hostContext?.displayMode === "fullscreen";
 
   const toggleFullscreen = async () => {
-    if (!document.fullscreenElement) {
-      if (containerRef.current?.requestFullscreen) {
-        await containerRef.current.requestFullscreen();
-      }
-    } else {
-      if (document.exitFullscreen) {
-        await document.exitFullscreen();
-      }
+    if (!app) {
+      toast.error("App not connected.");
+      return;
+    }
+    try {
+      const newMode = isFullscreen ? "inline" : "fullscreen";
+      await app.requestDisplayMode({ mode: newMode });
+    } catch (e: any) {
+      toast.error(`Failed to request display mode change: ${e.message}`);
     }
   };
 
