@@ -8,7 +8,9 @@ import { Button } from "../../shared/components/ui/button";
  * Renders the classic Prince of Persia web game (PrinceJS) via an iframe.
  * Includes a native fullscreen toggle for a better gameplay experience.
  */
-export const PrinceJS: React.FC = () => {
+import type { ToolComponentProps } from "../../core/framework/tool-contract";
+
+export const PrinceJS: React.FC<ToolComponentProps> = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -41,7 +43,7 @@ export const PrinceJS: React.FC = () => {
       className={`relative w-full overflow-hidden bg-black flex items-center justify-center ${isFullscreen ? 'h-screen' : 'h-[600px] rounded-md border shadow-sm'}`}
     >
       <iframe
-        src="/princejs/index.html"
+        src="https://princejs.com/"
         className="w-full h-full border-0"
         title="PrinceJS"
         sandbox="allow-scripts allow-same-origin"
