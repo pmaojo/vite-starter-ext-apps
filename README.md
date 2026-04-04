@@ -92,3 +92,12 @@ For production deployments, we strongly recommend deploying this template (using
 **This application IS compatible with stateless Serverless Functions (e.g., Vercel).**
 
 This MCP server has been successfully tested and is currently running in production on Vercel. While Serverless environments do implement strict execution timeouts and destroy memory state between function invocations, Vercel's Node.js runtime and standard API configurations handle the Server-Sent Events (SSE) connections used by MCP well enough for typical stateless tool executions and standard interactions to succeed.
+
+## Why Base UI over Radix UI?
+
+While both Radix UI and Base UI provide excellent unstyled, accessible headless components, we chose Base UI for this project for several architectural reasons:
+
+1. **Simpler API with `render` props**: Base UI favors the explicit `render` prop pattern over Radix's `asChild` merging strategy. This prevents common "Slot" component bugs and makes it much more explicit how props are injected into custom elements.
+2. **Separation of Logic and Positioning**: Base UI introduces a dedicated `Positioner` component, clearly separating the core component logic from layout and positioning concerns. This provides greater control and predictability when placing popups and floating elements.
+3. **Unified Dependency**: Instead of installing individual packages for every component (like `@radix-ui/react-dialog`), Base UI comes as a single, unified library (`@base-ui/react`). This simplifies package management and updates.
+4. **Enhanced Accessibility Guardrails**: Base UI enforces strict, modern accessibility standards, automatically guiding developers to correctly compose complex components (e.g., requiring a `Group` wrapper for labels inside popups to ensure proper screen reader announcements).
