@@ -16,6 +16,7 @@ import type { ToolManifest } from "../core/framework/tool-contract";
 import { getTimeManifest } from "./get-time/manifest";
 import { hostBridgeManifest } from "./host-bridge/manifest";
 import { fileExplorerManifest } from "./file-explorer/manifest";
+import { learnMcpManifest } from "./learn-mcp/manifest";
 
 /**
  * Array of all actively registered tool manifests.
@@ -24,6 +25,7 @@ const manifests: ToolManifest[] = [
   getTimeManifest,
   hostBridgeManifest,
   fileExplorerManifest,
+  learnMcpManifest,
 ];
 
 /**

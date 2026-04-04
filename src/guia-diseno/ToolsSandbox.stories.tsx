@@ -118,6 +118,20 @@ export const Default: Story = {
   },
 };
 
+export const LearnMcpExample: Story = {
+  args: {
+    selectedToolSlug: 'learn-mcp',
+    mockToolResult: JSON.stringify({
+      content: [
+        {
+          type: "text",
+          text: "Mock learn data"
+        }
+      ]
+    }, null, 2),
+  },
+};
+
 // Si 'get-time' existe en el registro, proporcionamos una historia específica para él.
 export const GetTimeExample: Story = {
   args: {
