@@ -37,6 +37,25 @@ function configureServer(server: McpServer) {
   const resourceUri = "ui://get-time/mcp-app.html";
 
   /**
+   * PrinceJS Tool.
+   *
+   * @description
+   * Launches the classic Prince of Persia web game (PrinceJS) in the UI.
+   */
+  registerAppTool(server,
+    "prince-js",
+    {
+      title: "PrinceJS",
+      description: "Play the classic Prince of Persia game.",
+      inputSchema: z.object({}),
+      _meta: { ui: { resourceUri: "ui://prince-js/mcp-app.html" } },
+    },
+    async (): Promise<CallToolResult> => {
+      return { content: [{ type: "text", text: "PrinceJS initialized. Play the game in the UI." }] };
+    },
+  );
+
+  /**
    * Register a tool with UI metadata.
    *
    * @description
