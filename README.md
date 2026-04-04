@@ -66,7 +66,7 @@ npm run dev
 
 ## How It Works
 
-1. The server registers a `get-time` tool with metadata linking it to a UI HTML resource (`ui://get-time/mcp-app.html`).
+1. The server registers a `get-time` tool with metadata linking it to a UI HTML resource (`ui://main/mcp-app.html`).
 2. When the tool is invoked, the Host renders the UI from the resource.
 3. The UI uses the MCP App SDK API to communicate with the host and call server tools.
 

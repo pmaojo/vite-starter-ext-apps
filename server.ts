@@ -34,7 +34,7 @@ const DIST_DIR = import.meta.filename.endsWith(".ts")
  */
 function configureServer(server: McpServer) {
   // Two-part registration: tool + resource, tied together by the resource URI.
-  const resourceUri = "ui://get-time/mcp-app.html";
+  const resourceUri = "ui://main/mcp-app.html";
 
   /**
    * PrinceJS Tool.
