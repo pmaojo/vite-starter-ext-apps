@@ -99,6 +99,25 @@ function configureServer(server: McpServer) {
   );
 
   /**
+   * Register the Learn MCP Ext-Apps tool.
+   *
+   * @description
+   * A gamified interactive learning tool for the MCP Ext-Apps SDK.
+   */
+  registerAppTool(server,
+    "learn-mcp",
+    {
+      title: "Learn MCP Ext-Apps",
+      description: "An interactive mobile-first responsive learning experience covering modelcontextprotocol/ext-apps documentation with gamification.",
+      inputSchema: z.object({}),
+      _meta: { ui: { resourceUri } },
+    },
+    async (): Promise<CallToolResult> => {
+      return { content: [{ type: "text", text: "Learn MCP Ext-Apps tool initialized. Please interact with the UI to complete modules." }] };
+    },
+  );
+
+  /**
    * File Explorer Tool.
    *
    * @description
