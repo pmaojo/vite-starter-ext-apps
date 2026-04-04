@@ -33,7 +33,9 @@
     "start": "cross-env NODE_ENV=development npm run build:full && npm run serve",
     "start:stdio": "cross-env NODE_ENV=development npm run build:full 1>&2 && npm run serve:stdio",
     "dev": "cross-env NODE_ENV=development concurrently \"npm run watch\" \"npm run serve\"",
-    "prepublishOnly": "npm run build:full"
+    "prepublishOnly": "npm run build:full",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
@@ -43,6 +45,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cors": "^2.8.5",
+    "embla-carousel-react": "^8.6.0",
     "express": "^5.1.0",
     "i18next": "^26.0.3",
     "i18next-browser-languagedetector": "^8.2.1",
@@ -62,6 +65,13 @@
     "zod-to-json-schema": "^3.25.2"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^3.2.4",
+    "@storybook/addon-a11y": "^8.6.14",
+    "@storybook/addon-docs": "^8.6.14",
+    "@storybook/addon-onboarding": "^8.6.14",
+    "@storybook/blocks": "^8.6.14",
+    "@storybook/react-vite": "^8.6.14",
+    "@storybook/test": "^8.6.18",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.0",
     "@types/node": "22.10.0",
@@ -72,6 +82,7 @@
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
     "postcss": "^8.5.8",
+    "storybook": "^8.6.14",
     "tailwindcss": "^3.4.19",
     "typescript": "^5.9.3",
     "vite": "^6.0.0",
