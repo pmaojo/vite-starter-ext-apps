@@ -10,6 +10,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import cors from "cors";
 import type { Request, Response } from "express";
+import express from "express";
 import fs from "node:fs";
 import path from "node:path";
 import { createServer } from "./server.js";
@@ -24,6 +25,10 @@ export function buildApp(createServerFn: () => McpServer) {
 
   const app = createMcpExpressApp({ host: "0.0.0.0" });
   app.use(cors());
+
+  // Serve static assets from the public directory so that tools like PrinceJS
+  // can load their static files.
+  app.use(express.static(path.join(process.cwd(), "public")));
 
   // Always serve the UI on / for convenience, even in full-stack mode.
   app.get("/", (req, res) => {
