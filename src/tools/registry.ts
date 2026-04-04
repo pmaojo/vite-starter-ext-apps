@@ -17,7 +17,7 @@ import { getTimeManifest } from "./get-time/manifest";
 import { hostBridgeManifest } from "./host-bridge/manifest";
 import { fileExplorerManifest } from "./file-explorer/manifest";
 import { learnMcpManifest } from "./learn-mcp/manifest";
-import { princeJsManifest } from "./prince-js/manifest";
+import { threejsTetrisManifest } from "./threejs-tetris/manifest";
 
 /**
  * Array of all actively registered tool manifests.
@@ -27,7 +27,7 @@ const manifests: ToolManifest[] = [
   hostBridgeManifest,
   fileExplorerManifest,
   learnMcpManifest,
-  princeJsManifest,
+  threejsTetrisManifest,
 ];
 
 /**

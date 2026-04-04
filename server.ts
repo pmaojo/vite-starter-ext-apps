@@ -37,21 +37,21 @@ function configureServer(server: McpServer) {
   const resourceUri = "ui://main/mcp-app.html";
 
   /**
-   * PrinceJS Tool.
+   * ThreeJS Tetris Tool.
    *
    * @description
-   * Launches the classic Prince of Persia web game (PrinceJS) in the UI.
+   * Play the classic Tetris game in 3D in the UI.
    */
   registerAppTool(server,
-    "prince-js",
+    "threejs-tetris",
     {
-      title: "PrinceJS",
-      description: "Play the classic Prince of Persia game.",
+      title: "ThreeJS Tetris",
+      description: "Play the classic Tetris game in 3D.",
       inputSchema: z.object({}),
       _meta: { ui: { resourceUri } },
     },
     async (): Promise<CallToolResult> => {
-      return { content: [{ type: "text", text: "PrinceJS initialized. Play the game in the UI." }] };
+      return { content: [{ type: "text", text: "ThreeJS Tetris initialized. Play the game in the UI." }] };
     },
   );
 

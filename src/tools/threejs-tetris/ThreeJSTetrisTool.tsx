@@ -1,16 +1,12 @@
 import { Maximize, Minimize } from "lucide-react";
 import React, { useRef, useState, useEffect } from "react";
 import { Button } from "../../shared/components/ui/button";
+import Tetris from "./pages/Tetris";
+import "./app.scss";
 
-/**
- * @module PrinceJS Component
- * @description
- * Renders the classic Prince of Persia web game (PrinceJS) via an iframe.
- * Includes a native fullscreen toggle for a better gameplay experience.
- */
 import type { ToolComponentProps } from "../../core/framework/tool-contract";
 
-export const PrinceJS: React.FC<ToolComponentProps> = () => {
+export const ThreeJSTetrisTool: React.FC<ToolComponentProps> = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -42,12 +38,7 @@ export const PrinceJS: React.FC<ToolComponentProps> = () => {
       ref={containerRef}
       className={`relative w-full overflow-hidden bg-black flex items-center justify-center ${isFullscreen ? 'h-screen' : 'h-[600px] rounded-md border shadow-sm'}`}
     >
-      <iframe
-        src="https://princejs.com/"
-        className="w-full h-full border-0"
-        title="PrinceJS"
-        sandbox="allow-scripts allow-same-origin"
-      />
+      <Tetris />
 
       <Button
         variant="secondary"
