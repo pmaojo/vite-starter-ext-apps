@@ -48,7 +48,7 @@ function configureServer(server: McpServer) {
       title: "PrinceJS",
       description: "Play the classic Prince of Persia game.",
       inputSchema: z.object({}),
-      _meta: { ui: { resourceUri: "ui://prince-js/mcp-app.html" } },
+      _meta: { ui: { resourceUri } },
     },
     async (): Promise<CallToolResult> => {
       return { content: [{ type: "text", text: "PrinceJS initialized. Play the game in the UI." }] };
