@@ -158,6 +158,16 @@ export function McpProvider({ children }: { children: ReactNode }) {
     }
   }, [error, t]);
 
+  // Sync the host theme with the document root class for Tailwind dark mode
+  useEffect(() => {
+    const root = document.documentElement;
+    if (hostContext?.theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  }, [hostContext?.theme]);
+
   const value: McpContextValue = {
     app,
     error,

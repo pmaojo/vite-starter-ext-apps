@@ -14,9 +14,6 @@
   --color-ring-primary: light-dark(#3b82f6, #60a5fa);
   --border-radius-md: 6px;
   --border-width-regular: 1px;
-  --font-sans:
-    ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol", "Noto Color Emoji";
   --font-mono:
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
