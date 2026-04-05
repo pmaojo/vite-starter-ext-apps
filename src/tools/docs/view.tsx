@@ -1,5 +1,4 @@
 import { FullscreenView } from "@/shared/components/ui/fullscreen-view";
-import type { ToolComponentProps } from "@/core/framework/tool-contract";
 
 export function DocsView({ toolResult }: ToolComponentProps) {
   // Extract baseURL from the toolResult, falling back to localhost if unavailable.
