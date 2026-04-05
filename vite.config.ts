@@ -28,6 +28,12 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
+    coverage: {
+      provider: "v8",
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: ["src/**/*.d.ts", "src/**/*.test.{ts,tsx}", "src/shared/components/ui/**", "src/stories/**", "src/tools/**/view.tsx", "src/tools/**/components/**", "src/tools/**/libs/**", "src/tools/**/pages/**", "src/tools/**/index.ts", "src/tools/**/*.tsx", "src/guia-diseno/**", "src/shared/hooks/**", "src/core/framework/**", "src/types/**"],
+      reporter: ["text", "json", "html"],
+    },
   },
   build: {
     sourcemap: isDevelopment ? "inline" : undefined,
