@@ -160,33 +160,6 @@ function configureServer(server: McpServer) {
   const baseURL = `${protocol}://${host}`;
 
   /**
-   * View API Documentation Tool.
-   *
-   * @description
-   * Surfaces the statically generated TypeDoc API documentation in an interactive UI.
-   */
-  registerAppTool(
-    server,
-    "view-docs",
-    {
-      title: "API Documentation",
-      description: "View the generated TypeDoc API documentation for this project.",
-      inputSchema: z.object({}),
-      _meta: { ui: { resourceUri } },
-    },
-    async (): Promise<CallToolResult> => {
-      return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify({ baseURL, message: "API Documentation initialized. Please view it in the UI." }),
-          },
-        ],
-      };
-    }
-  );
-
-  /**
    * File Explorer Tool.
    *
    * @description
