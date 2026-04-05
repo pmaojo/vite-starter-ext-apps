@@ -7,9 +7,9 @@ export function DocsView({ toolResult }: ToolComponentProps) {
   // often resolves window.location.origin to 'null', which breaks relative paths.
   let baseURL = "http://localhost:3001";
   try {
-    const rawText = toolResult?.content?.[0]?.text;
-    if (rawText) {
-      const parsed = JSON.parse(rawText);
+    const firstContent = toolResult?.content?.[0];
+    if (firstContent?.type === "text" && firstContent.text) {
+      const parsed = JSON.parse(firstContent.text);
       if (parsed.baseURL) {
         baseURL = parsed.baseURL;
       }
