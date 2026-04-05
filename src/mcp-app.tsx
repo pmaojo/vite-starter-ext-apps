@@ -20,7 +20,7 @@ import "./index.css";
  * Note: This application is a didactic starter, and the tools shown
  * are for demo purposes to illustrate SDK usage.
  */
-function AppContent() {
+export function AppContent() {
   const { t } = useTranslation();
   const { app, error, hostContext, toolResult } = useMcp();
 
@@ -63,11 +63,14 @@ function AppContent() {
   );
 }
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <McpProvider>
-      <AppContent />
-      <Toaster />
-    </McpProvider>
-  </StrictMode>
-);
+// Ensure we only mount if running in a real browser environment
+if (typeof document !== "undefined" && document.getElementById("root")) {
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <McpProvider>
+        <AppContent />
+        <Toaster />
+      </McpProvider>
+    </StrictMode>
+  );
+}
