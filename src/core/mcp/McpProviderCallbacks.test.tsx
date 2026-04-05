@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, act } from "@testing-library/react";
-import React from "react";
 import { McpProvider, useMcp } from "./McpProvider";
 import * as mcpReact from "@modelcontextprotocol/ext-apps/react";
 import type { App, McpUiHostContext } from "@modelcontextprotocol/ext-apps";
@@ -24,7 +23,7 @@ vi.mock("./logger", () => ({
 }));
 
 function TestComponent() {
-  const { app, error, hostContext, toolResult } = useMcp();
+  const { toolResult } = useMcp();
   return (
     <div>
       <div data-testid="tool-result">{toolResult ? "has result" : "no result"}</div>
@@ -55,6 +54,7 @@ describe("McpProvider callbacks", () => {
       return {
         app: mockApp,
         error: null,
+        isConnected: true,
       };
     });
 

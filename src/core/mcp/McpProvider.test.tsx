@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
-import React from "react";
 import { McpProvider, useMcp } from "./McpProvider";
 import * as mcpReact from "@modelcontextprotocol/ext-apps/react";
 import type { App, McpUiHostContext } from "@modelcontextprotocol/ext-apps";
@@ -20,7 +19,7 @@ function TestComponent() {
   return (
     <div>
       <div>App initialized</div>
-      {hostContext && <div>Host: {hostContext.appInfo.name}</div>}
+      {hostContext && (hostContext as any).appInfo && <div>Host: {String(((hostContext as any).appInfo as { name: string }).name)}</div>}
     </div>
   );
 }
@@ -35,6 +34,7 @@ describe("McpProvider", () => {
     vi.mocked(mcpReact.useApp).mockReturnValue({
       app: null,
       error: new Error("Test error"),
+      isConnected: false,
     });
 
     render(
@@ -48,12 +48,13 @@ describe("McpProvider", () => {
 
   it("should render and provide useMcp context with initialized app", () => {
     const mockApp = {
-      getHostContext: () => ({ appInfo: { name: "TestHost" } }) as unknown as McpUiHostContext,
+      getHostContext: () => ({ appInfo: { name: "TestHost", version: "1.0.0" } }) as unknown as McpUiHostContext,
     } as unknown as App;
 
     vi.mocked(mcpReact.useApp).mockReturnValue({
       app: mockApp,
       error: null,
+      isConnected: true,
     });
 
     render(
