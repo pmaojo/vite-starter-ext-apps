@@ -238,15 +238,15 @@ export function LearnMcpView({}: ToolComponentProps) {
 
   const handleCompleteModule = (module: Module) => {
     if (!completedModules.includes(module.id)) {
-      setCompletedModules((prev) => [...prev, module.id]);
-      setPoints((prev) => prev + module.points);
+      setCompletedModules((prev: string[]) => [...prev, module.id]);
+      setPoints((prev: number) => prev + module.points);
 
       toast.success(
         `Completed "${module.title}"! Earned ${module.points} points.`
       );
 
       if (module.badgeId && !earnedBadges.includes(module.badgeId)) {
-        setEarnedBadges((prev) => [...prev, module.badgeId!]);
+        setEarnedBadges((prev: string[]) => [...prev, module.badgeId!]);
         const badgeDef = BADGES[module.badgeId!];
         toast(`New Badge Earned: ${badgeDef?.name || module.badgeId}`, {
           icon: <Award className="w-5 h-5 text-yellow-500" />,
