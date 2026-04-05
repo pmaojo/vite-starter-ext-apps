@@ -18,7 +18,6 @@ import { hostBridgeManifest } from "./host-bridge/manifest";
 import { fileExplorerManifest } from "./file-explorer/manifest";
 import { learnMcpManifest } from "./learn-mcp/manifest";
 import { threejsTetrisManifest } from "./threejs-tetris/manifest";
-import { docsManifest } from "./docs/manifest";
 
 /**
  * Array of all actively registered tool manifests.
@@ -29,7 +28,6 @@ const manifests: ToolManifest[] = [
   fileExplorerManifest,
   learnMcpManifest,
   threejsTetrisManifest,
-  docsManifest,
 ];
 
 /**

@@ -9,6 +9,5 @@ describe("registry", () => {
     expect(TOOL_COMPONENTS["list-files"]).toBeDefined();
     expect(TOOL_COMPONENTS["learn-mcp"]).toBeDefined();
     expect(TOOL_COMPONENTS["threejs-tetris"]).toBeDefined();
-    expect(TOOL_COMPONENTS["view-docs"]).toBeDefined();
   });
 });
