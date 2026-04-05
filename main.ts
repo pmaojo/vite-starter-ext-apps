@@ -7,9 +7,8 @@
 import { createMcpExpressApp } from "@modelcontextprotocol/sdk/server/express.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import cors from "cors";
-import type { Request, Response } from "express";
+import type { Request, Response, NextFunction } from "express";
 import express from "express";
 import fs from "node:fs";
 import path from "node:path";
@@ -55,7 +54,7 @@ export function buildApp(createServerFn: () => McpServer) {
   });
 
   // Intercept SSE / Streamable HTTP connections for Vercel
-  const handleVercelHeaders = (req: Request, res: Response, next: any) => {
+  const handleVercelHeaders = (req: Request, res: Response, next: NextFunction) => {
     // Vercel specific settings to allow SSE streaming to pass through properly
     res.setHeader("Cache-Control", "no-cache, no-transform");
     res.setHeader("Connection", "keep-alive");

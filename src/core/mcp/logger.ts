@@ -4,7 +4,7 @@ import { toast } from "sonner";
 export interface LogMessage {
   level: "debug" | "info" | "warn" | "error";
   message: string;
-  data?: any;
+  data?: unknown;
 }
 
 let _app: App | null = null;
@@ -12,7 +12,7 @@ let _app: App | null = null;
 const sendLog = async (
   level: LogMessage["level"],
   message: string,
-  data?: any
+  data?: unknown
 ) => {
   const logMessage: LogMessage = { level, message, data };
 
@@ -44,7 +44,8 @@ const sendLog = async (
         level === "debug"
           ? level
           : "info";
-      await _app.sendLog({ level: sendLevel as any, data: logMessage });
+      // The App['sendLog'] method expects a specific string union for level
+      await _app.sendLog({ level: sendLevel as "debug" | "info" | "warning" | "error" | "notice" | "alert" | "critical" | "emergency", data: logMessage });
     } catch (e) {
       console.error("Failed to send log to MCP host", e);
     }
@@ -56,19 +57,19 @@ export const logger = {
     _app = app;
   },
 
-  info: async (message: string, data?: any) => {
+  info: async (message: string, data?: unknown) => {
     await sendLog("info", message, data);
   },
 
-  warn: async (message: string, data?: any) => {
+  warn: async (message: string, data?: unknown) => {
     await sendLog("warn", message, data);
   },
 
-  error: async (message: string, data?: any) => {
+  error: async (message: string, data?: unknown) => {
     await sendLog("error", message, data);
   },
 
-  debug: async (message: string, data?: any) => {
+  debug: async (message: string, data?: unknown) => {
     await sendLog("debug", message, data);
   },
 };

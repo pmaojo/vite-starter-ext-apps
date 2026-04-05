@@ -1,0 +1,81 @@
+$ eslint .
+
+/app/main.ts
+  10:10  warning  'StreamableHTTPServerTransport' is defined but never used  @typescript-eslint/no-unused-vars
+  58:67  warning  Unexpected any. Specify a different type                   @typescript-eslint/no-explicit-any
+
+/app/server.ts
+  184:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  222:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/src/core/mcp/McpProvider.test.tsx
+  22:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  22:91  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/src/core/mcp/McpProviderCallbacks.test.tsx
+  41:9   warning  'appCallbacks' is never reassigned. Use 'const' instead  prefer-const
+  41:23  warning  Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+  44:26  warning  Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+  45:27  warning  Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+  46:28  warning  Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+  47:31  warning  Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+  48:23  warning  Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+  49:36  warning  Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+
+/app/src/core/mcp/logger.ts
+   7:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  47:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  59:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  63:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  67:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  71:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/src/mcp-app.test.tsx
+   8:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  12:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:57  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  65:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  77:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  82:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  93:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  98:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/src/shared/hooks/useServerTool.ts
+  42:16  warning  'e' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/src/stories/Page.stories.ts
+  23:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/src/tools/file-explorer/view.tsx
+  72:77  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:77  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  84:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/src/tools/host-bridge/view.tsx
+   22:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   39:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   53:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   86:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  103:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  124:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/src/tools/threejs-tetris/ThreeJSTetrisTool.tsx
+  27:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/src/tools/threejs-tetris/components/MiniAxes.tsx
+  66:6  warning  React Hook useEffect has a missing dependency: 'cleanupArrows'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/app/src/tools/threejs-tetris/pages/Tetris.tsx
+  227:13  warning  'y' is never reassigned. Use 'const' instead  prefer-const
+  307:10  warning  'x' is never reassigned. Use 'const' instead  prefer-const
+  307:16  warning  'z' is never reassigned. Use 'const' instead  prefer-const
+
+/app/src/types/index.ts
+  4:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/app/vite.config.ts
+  6:10  warning  'fileURLToPath' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 47 problems (0 errors, 47 warnings)
+  0 errors and 1 warning potentially fixable with the `--fix` option.

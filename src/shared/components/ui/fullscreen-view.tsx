@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { XIcon } from "lucide-react";
+import XIcon from "lucide-react/dist/esm/icons/x";
 import { Button } from "@/shared/components/ui/button";
 
 export interface FullscreenViewProps extends React.HTMLAttributes<HTMLDivElement> {

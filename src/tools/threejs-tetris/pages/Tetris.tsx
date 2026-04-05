@@ -379,6 +379,7 @@ const Tetris: React.FC = () => {
       cleanupFall();
       window.removeEventListener("keydown", handleKeyDown);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [position, blocks, gameStarted, isPaused]);
 
   useEffect(() => {
@@ -386,7 +387,6 @@ const Tetris: React.FC = () => {
       setHighScore(score);
       localStorage.setItem(HIGH_SCORE_KEY, score.toString());
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameOver, score, highScore]);
 
   return (

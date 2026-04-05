@@ -181,10 +181,10 @@ function configureServer(server: McpServer) {
       }),
       _meta: { ui: { resourceUri } },
     },
-    async (request: any): Promise<CallToolResult> => {
+    async (request: unknown): Promise<CallToolResult> => {
       const sandboxDir = path.resolve(process.cwd(), "mcp-sandbox");
       const requestSubpath =
-        (request.params?.arguments?.subpath as string) || "";
+        ((request as Record<string, unknown>)?.params as Record<string, Record<string, unknown>>)?.arguments?.subpath as string || "";
       const targetPath = path.resolve(sandboxDir, requestSubpath);
 
       // Security check: strictly validate the path starts with sandboxDir
@@ -219,11 +219,11 @@ function configureServer(server: McpServer) {
         }));
 
         return { content: [{ type: "text", text: JSON.stringify(files) }] };
-      } catch (error: any) {
+      } catch (error: unknown) {
         return {
           isError: true,
           content: [
-            { type: "text", text: `Error reading directory: ${error.message}` },
+            { type: "text", text: `Error reading directory: ${error instanceof Error ? error.message : String(error)}` },
           ],
         };
       }

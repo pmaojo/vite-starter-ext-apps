@@ -19,7 +19,11 @@ function TestComponent() {
   return (
     <div>
       <div>App initialized</div>
-      {hostContext && (hostContext as any).appInfo && <div>Host: {String(((hostContext as any).appInfo as { name: string }).name)}</div>}
+      {hostContext && (hostContext as Record<string, unknown>).appInfo ? (
+        <div>
+          Host: {String(((hostContext as Record<string, unknown>).appInfo as { name: string }).name)}
+        </div>
+      ) : null}
     </div>
   );
 }
