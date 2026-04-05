@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import type { App } from "@modelcontextprotocol/ext-apps";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
@@ -22,11 +22,15 @@ export function useServerTool(
   const [isLoading, setIsLoading] = useState(false);
 
   // If the host passed down a new toolResult, override our manual result tracking
-  if (hostProvidedResult !== lastHostResult) {
-    setLastHostResult(hostProvidedResult);
-    setManualResult(null); // Clear manual result so host result takes precedence
-    setIsError(false);
-  }
+  useEffect(() => {
+    if (hostProvidedResult !== lastHostResult) {
+      setLastHostResult(hostProvidedResult);
+      setManualResult(null); // Clear manual result so host result takes precedence
+      setIsError(false);
+    }
+    // lastHostResult intentionally omitted — we only want to react to host-driven changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hostProvidedResult]);
 
   const executeTool = useCallback(
     async (args: Record<string, unknown> = {}) => {
