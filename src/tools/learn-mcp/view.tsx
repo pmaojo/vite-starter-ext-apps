@@ -211,24 +211,6 @@ export function LearnMcpView({}: ToolComponentProps) {
   // Load all progress state from a single localStorage read
   const [{ points, completedModules, earnedBadges }, setProgress] = useState<LearnMcpProgress>(loadSavedProgress);
 
-  const setPoints = (updater: number | ((prev: number) => number)) =>
-    setProgress((prev) => ({
-      ...prev,
-      points: typeof updater === "function" ? updater(prev.points) : updater,
-    }));
-
-  const setCompletedModules = (updater: string[] | ((prev: string[]) => string[])) =>
-    setProgress((prev) => ({
-      ...prev,
-      completedModules: typeof updater === "function" ? updater(prev.completedModules) : updater,
-    }));
-
-  const setEarnedBadges = (updater: string[] | ((prev: string[]) => string[])) =>
-    setProgress((prev) => ({
-      ...prev,
-      earnedBadges: typeof updater === "function" ? updater(prev.earnedBadges) : updater,
-    }));
-
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
 
   // Save state whenever it changes
@@ -250,22 +232,28 @@ export function LearnMcpView({}: ToolComponentProps) {
       : 0;
 
   const handleCompleteModule = (module: Module) => {
-    if (!completedModules.includes(module.id)) {
-      setCompletedModules((prev: string[]) => [...prev, module.id]);
-      setPoints((prev: number) => prev + module.points);
-
-      toast.success(
-        `Completed "${module.title}"! Earned ${module.points} points.`
-      );
-
-      if (module.badgeId && !earnedBadges.includes(module.badgeId)) {
-        setEarnedBadges((prev: string[]) => [...prev, module.badgeId!]);
-        const badgeDef = BADGES[module.badgeId!];
-        toast(`New Badge Earned: ${badgeDef?.name || module.badgeId}`, {
-          icon: <Award className="w-5 h-5 text-yellow-500" />,
-        });
-      }
+    if (completedModules.includes(module.id)) {
+      setActiveModuleId(null);
+      return;
     }
+
+    const isNewBadge = !!module.badgeId && !earnedBadges.includes(module.badgeId);
+
+    setProgress((prev) => ({
+      completedModules: [...prev.completedModules, module.id],
+      points: prev.points + module.points,
+      earnedBadges: isNewBadge ? [...prev.earnedBadges, module.badgeId!] : prev.earnedBadges,
+    }));
+
+    toast.success(`Completed "${module.title}"! Earned ${module.points} points.`);
+
+    if (isNewBadge) {
+      const badgeDef = BADGES[module.badgeId!];
+      toast(`New Badge Earned: ${badgeDef?.name || module.badgeId}`, {
+        icon: <Award className="w-5 h-5 text-yellow-500" />,
+      });
+    }
+
     setActiveModuleId(null);
   };
 
