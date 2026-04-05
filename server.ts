@@ -151,6 +151,14 @@ function configureServer(server: McpServer) {
     }
   );
 
+  // Infer the base URL from Vercel environment variables, or fallback to localhost
+  const protocol = process.env.VERCEL_URL ? "https" : "http";
+  const host =
+    process.env.VERCEL_PROJECT_PRODUCTION_URL ||
+    process.env.VERCEL_URL ||
+    `localhost:${process.env.PORT || 3001}`;
+  const baseURL = `${protocol}://${host}`;
+
   /**
    * View API Documentation Tool.
    *
@@ -171,7 +179,7 @@ function configureServer(server: McpServer) {
         content: [
           {
             type: "text",
-            text: "API Documentation initialized. Please view it in the UI.",
+            text: JSON.stringify({ baseURL, message: "API Documentation initialized. Please view it in the UI." }),
           },
         ],
       };
@@ -248,14 +256,6 @@ function configureServer(server: McpServer) {
       }
     }
   );
-
-  // Infer the base URL from Vercel environment variables, or fallback to localhost
-  const protocol = process.env.VERCEL_URL ? "https" : "http";
-  const host =
-    process.env.VERCEL_PROJECT_PRODUCTION_URL ||
-    process.env.VERCEL_URL ||
-    `localhost:${process.env.PORT || 3001}`;
-  const baseURL = `${protocol}://${host}`;
 
   /**
    * Register the UI Resource.
