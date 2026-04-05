@@ -1,106 +1,76 @@
-# Example: Basic Server (React)
+# MCP React App
 
-![Screenshot](screenshot.png)
+A comprehensive full-stack starter template and didactic reference for building rich Interactive Tool UIs using the Model Context Protocol (MCP) and React.
 
-An MCP App example with a React UI.
+This application acts as a sandbox that demonstrates how to implement a complex, multi-tool extension utilizing Vite, Tailwind CSS, Base UI, and the `@modelcontextprotocol/ext-apps/react` SDK.
 
-> [!TIP]
-> Looking for a vanilla JavaScript example? See [`basic-server-vanillajs`](https://github.com/modelcontextprotocol/ext-apps/tree/main/examples/basic-server-vanillajs)!
+## 🛠️ Included Tools
 
-## MCP Client Configuration
+This repository showcases 6 fully-functional MCP tools, each highlighting different capabilities of the Ext-Apps SDK.
 
-Add to your MCP client configuration (stdio transport):
+### File Explorer
+A tool to navigate and interact with the sandboxed file system.
 
-```json
-{
-  "mcpServers": {
-    "basic-react": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "--silent",
-        "--registry=https://registry.npmjs.org/",
-        "@modelcontextprotocol/server-basic-react",
-        "--stdio"
-      ]
-    }
-  }
-}
-```
+![File Explorer](docs/assets/file-explorer.png)
 
-### Local Development
+### Get Time
+A robust example of server-side data fetching and dynamic UI updates via the Host Bridge.
 
-To test local modifications, use this configuration (replace `~/code/ext-apps` with your clone path):
+![Get Time](docs/assets/get-time.png)
 
-```json
-{
-  "mcpServers": {
-    "basic-react": {
-      "command": "bash",
-      "args": [
-        "-c",
-        "cd ~/code/ext-apps/examples/basic-server-react && npm run build >&2 && node dist/index.js --stdio"
-      ]
-    }
-  }
-}
-```
+### Host Bridge
+Demonstrates two-way messaging, logging, and interaction with the parent Host Context.
 
-## Overview
+![Host Bridge](docs/assets/host-bridge.png)
 
-- Tool registration with a linked UI resource
-- React UI using the [`useApp()`](https://apps.extensions.modelcontextprotocol.io/api/functions/_modelcontextprotocol_ext-apps_react.useApp.html) hook
-- App communication APIs: [`callServerTool`](https://apps.extensions.modelcontextprotocol.io/api/classes/app.App.html#callservertool), [`sendMessage`](https://apps.extensions.modelcontextprotocol.io/api/classes/app.App.html#sendmessage), [`sendLog`](https://apps.extensions.modelcontextprotocol.io/api/classes/app.App.html#sendlog), [`openLink`](https://apps.extensions.modelcontextprotocol.io/api/classes/app.App.html#openlink)
+### Learn MCP
+A step-by-step interactive wizard designed to introduce the core concepts of the Model Context Protocol.
 
-## Key Files
+![Learn MCP](docs/assets/learn-mcp.png)
 
-- [`server.ts`](server.ts) - MCP server with tool and resource registration
-- [`mcp-app.html`](mcp-app.html) / [`src/mcp-app.tsx`](src/mcp-app.tsx) - React UI using `useApp()` hook
+### ThreeJS Tetris
+A complex, WebGL-powered 3D Tetris implementation proving that high-performance graphical apps can be embedded seamlessly as MCP Tool UIs.
 
-## Getting Started
+![ThreeJS Tetris](docs/assets/threejs-tetris.png)
+
+### View Docs
+A documentation viewer tool that renders dynamically generated TypeDoc API documentation securely via an iframe.
+
+![View Docs](docs/assets/view-docs.png)
+
+
+## 🚀 Getting Started
 
 ```bash
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
-## How It Works
+### Local Storybook Sandbox
 
-1. The server registers a `get-time` tool with metadata linking it to a UI HTML resource (`ui://main/mcp-app.html`).
-2. When the tool is invoked, the Host renders the UI from the resource.
-3. The UI uses the MCP App SDK API to communicate with the host and call server tools.
+Because MCP Tool UIs expect to be injected into a Host Context, running `bun run dev` will simply show a waiting screen. To actively develop and test the UIs locally, use the provided Storybook sandbox environment:
 
-## Build System
+```bash
+bun run storybook
+```
 
-The project supports two primary build flavors:
+This launches a complete Host simulator with real-time editing.
 
-- **`npm run build:ui` (Static UI Only):** Bundles the entire React application into a single, self-contained HTML file (`mcp-app.html`) using Vite with `vite-plugin-singlefile`. This allows all UI content (JS, CSS) to be fully inlined. Because it is a standalone static file, you can host `mcp-app.html` anywhere (e.g., AWS S3, GitHub Pages, Netlify, or any CDN). Note: When hosted separately, it still requires connection to a backend MCP server to function as a complete tool.
-- **`npm run build:full` (Full Stack):** Compiles both the static UI (`build:ui`) and the backend MCP server (`server.ts`, `main.ts`) into a Node.js-compatible distribution (`dist/`). This is the default build step for production deployments where you want to host both the UI and the MCP SSE endpoints together.
+## 🏗️ Architectural Overview
 
-Alternatively, MCP apps can load external resources by defining [`_meta.ui.csp.resourceDomains`](https://apps.extensions.modelcontextprotocol.io/api/interfaces/app.McpUiResourceCsp.html#resourcedomains) in the UI resource metadata.
+- **Micro-Manifest Architecture:** Each tool is fully self-contained within `src/tools/<name>` and exports a `ToolManifest` which is aggregated by a central registry (`src/tools/registry.ts`).
+- **Single File Build:** The UI is bundled into a standalone `mcp-app.html` using `vite-plugin-singlefile`, allowing seamless transport via serverless environments.
+- **Dynamic Context Injection:** The main React App (`src/mcp-app.tsx`) acts purely as a router, extracting the `toolName` string from `hostContext.toolInfo.tool.name` and rendering the corresponding registered component.
 
-## Deployment Notes
+## 🌗 Theming & Typography
 
-### Long-Running Environments (Recommended)
+The application automatically synchronizes its visual theme with the Host environment. The core `McpProvider` hook monitors the `hostContext.theme` property and injects Tailwind's `.dark` class directly into the document root.
 
-For production deployments, we strongly recommend deploying this template (using `build:full`) to a traditional, long-running Node.js environment. Examples include:
+Typography relies on the Inter font (`@fontsource-variable/inter`) properly configured via Tailwind configuration and CSS variables.
 
-- **Render** (Web Services)
-- **Railway**
-- **Heroku**
-- **DigitalOcean App Platform** or a VPS
+## 📦 Build System
 
-### Serverless Environments (Vercel, Netlify, AWS Lambda)
+The project uses `bun` for fast, reproducible builds and supports two modes:
 
-**This application IS compatible with stateless Serverless Functions (e.g., Vercel).**
-
-This MCP server has been successfully tested and is currently running in production on Vercel. While Serverless environments do implement strict execution timeouts and destroy memory state between function invocations, Vercel's Node.js runtime and standard API configurations handle the Server-Sent Events (SSE) connections used by MCP well enough for typical stateless tool executions and standard interactions to succeed.
-
-## Why Base UI over Radix UI?
-
-While both Radix UI and Base UI provide excellent unstyled, accessible headless components, we chose Base UI for this project for several architectural reasons:
-
-1. **Simpler API with `render` props**: Base UI favors the explicit `render` prop pattern over Radix's `asChild` merging strategy. This prevents common "Slot" component bugs and makes it much more explicit how props are injected into custom elements.
-2. **Separation of Logic and Positioning**: Base UI introduces a dedicated `Positioner` component, clearly separating the core component logic from layout and positioning concerns. This provides greater control and predictability when placing popups and floating elements.
-3. **Unified Dependency**: Instead of installing individual packages for every component (like `@radix-ui/react-dialog`), Base UI comes as a single, unified library (`@base-ui/react`). This simplifies package management and updates.
-4. **Enhanced Accessibility Guardrails**: Base UI enforces strict, modern accessibility standards, automatically guiding developers to correctly compose complex components (e.g., requiring a `Group` wrapper for labels inside popups to ensure proper screen reader announcements).
+- **`bun run build:ui`**: Compiles the React UI into the static `mcp-app.html` artifact.
+- **`bun run build:full`**: Compiles the UI, and then builds the underlying Node.js MCP server responsible for bridging the Host commands.
