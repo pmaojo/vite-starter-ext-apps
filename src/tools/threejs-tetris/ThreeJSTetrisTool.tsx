@@ -1,9 +1,10 @@
-import { Maximize, Minimize } from "lucide-react";
 import React, { useRef } from "react";
 import { Button } from "../../shared/components/ui/button";
 import { toast } from "sonner";
-import Tetris from "./pages/Tetris";
 import "./app.scss";
+
+// Load the heavy 3D Tetris bundle dynamically
+const Tetris = React.lazy(() => import("./pages/Tetris"));
 
 import type { ToolComponentProps } from "../../core/framework/tool-contract";
 
@@ -33,7 +34,9 @@ export const ThreeJSTetrisTool: React.FC<ToolComponentProps> = ({
       ref={containerRef}
       className={`relative w-full overflow-hidden bg-black flex items-center justify-center ${isFullscreen ? "h-screen" : "h-[600px] rounded-md border shadow-sm"}`}
     >
-      <Tetris />
+      <React.Suspense fallback={<div className="text-white p-4">Loading 3D Engine...</div>}>
+        <Tetris />
+      </React.Suspense>
 
       <Button
         variant="secondary"
@@ -42,11 +45,7 @@ export const ThreeJSTetrisTool: React.FC<ToolComponentProps> = ({
         onClick={toggleFullscreen}
         title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
       >
-        {isFullscreen ? (
-          <Minimize className="h-4 w-4" />
-        ) : (
-          <Maximize className="h-4 w-4" />
-        )}
+        {isFullscreen ? "Exit" : "Fullscreen"}
       </Button>
     </div>
   );

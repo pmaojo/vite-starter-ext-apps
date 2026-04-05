@@ -8,13 +8,11 @@ import {
   CardDescription,
 } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
-import {
-  File,
-  Folder,
-  ChevronRight,
-  AlertCircle,
-  RefreshCw,
-} from "lucide-react";
+import File from "lucide-react/dist/esm/icons/file";
+import Folder from "lucide-react/dist/esm/icons/folder";
+import ChevronRight from "lucide-react/dist/esm/icons/chevron-right";
+import AlertCircle from "lucide-react/dist/esm/icons/alert-circle";
+import RefreshCw from "lucide-react/dist/esm/icons/refresh-cw";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -97,6 +95,7 @@ export function FileExplorerView({ app }: ToolComponentProps) {
     if (app) {
       fetchFiles("");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [app]);
 
   const handleNavigate = (entry: FileEntry) => {

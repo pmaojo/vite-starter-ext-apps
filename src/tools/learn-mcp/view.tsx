@@ -5,7 +5,10 @@ import { Badge } from "@/shared/components/ui/badge";
 import { InlineCard } from "@/shared/components/ui/inline-card";
 import { FullscreenView } from "@/shared/components/ui/fullscreen-view";
 import { toast } from "sonner";
-import { CheckCircle2, Award, BookOpen, Star } from "lucide-react";
+import CheckCircle2 from "lucide-react/dist/esm/icons/check-circle-2";
+import Award from "lucide-react/dist/esm/icons/award";
+import BookOpen from "lucide-react/dist/esm/icons/book-open";
+import Star from "lucide-react/dist/esm/icons/star";
 import { DataFlowDiagram } from "./components/data-flow-diagram";
 
 // Data Models
@@ -182,31 +185,44 @@ const MODULES: Module[] = [
 ];
 
 export function LearnMcpView({}: ToolComponentProps) {
-  const [points, setPoints] = useState(0);
-  const [completedModules, setCompletedModules] = useState<string[]>([]);
-  const [earnedBadges, setEarnedBadges] = useState<string[]>([]);
-  const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
-
-  // Load state from localStorage on mount
-  useEffect(() => {
+  // Load state from localStorage using lazy initialization
+  const [points, setPoints] = useState(() => {
     try {
-      const saved = localStorage.getItem("learnMcpState");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        setPoints(parsed.points || 0);
-        setCompletedModules(parsed.completedModules || []);
-        setEarnedBadges(parsed.earnedBadges || []);
-      }
-    } catch (e) {
-      console.error("Failed to load state", e);
+      const saved = localStorage.getItem("learnMcpState:v1");
+      if (saved) return JSON.parse(saved).points || 0;
+    } catch {
+      // ignore
     }
-  }, []);
+    return 0;
+  });
+
+  const [completedModules, setCompletedModules] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem("learnMcpState:v1");
+      if (saved) return JSON.parse(saved).completedModules || [];
+    } catch {
+      // ignore
+    }
+    return [];
+  });
+
+  const [earnedBadges, setEarnedBadges] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem("learnMcpState:v1");
+      if (saved) return JSON.parse(saved).earnedBadges || [];
+    } catch {
+      // ignore
+    }
+    return [];
+  });
+
+  const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
 
   // Save state whenever it changes
   useEffect(() => {
     try {
       localStorage.setItem(
-        "learnMcpState",
+        "learnMcpState:v1",
         JSON.stringify({ points, completedModules, earnedBadges })
       );
     } catch (e) {
@@ -245,7 +261,7 @@ export function LearnMcpView({}: ToolComponentProps) {
     setCompletedModules([]);
     setEarnedBadges([]);
     setActiveModuleId(null);
-    localStorage.removeItem("learnMcpState");
+    localStorage.removeItem("learnMcpState:v1");
     toast.info("Progress reset.");
   };
 
