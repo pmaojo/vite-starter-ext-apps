@@ -1,2 +1,0 @@
-Warning: Server is binding to 0.0.0.0 without DNS rebinding protection. Consider using the allowedHosts option to restrict allowed hosts, or use authentication to protect your server.
-MCP server listening on http://localhost:0/mcp
