@@ -1,7 +1,7 @@
 export interface LogMessage {
   level: "info" | "warn" | "error" | "debug";
   message: string;
-  data?: any;
+  data?: unknown;
 }
 
 export interface AppState {

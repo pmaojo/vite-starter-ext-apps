@@ -19,8 +19,8 @@ export function HostBridgeView({ app }: ToolComponentProps) {
         ],
       });
       toast.success("Message sent to host.");
-    } catch (e: any) {
-      toast.error(`Failed to send message: ${e.message}`);
+    } catch (e: unknown) {
+      toast.error(`Failed to send message: ${e instanceof Error ? e.message : String(e)}`);
     }
   };
 
@@ -36,8 +36,8 @@ export function HostBridgeView({ app }: ToolComponentProps) {
         data: `Hydration complete at ${new Date().toISOString()}`,
       });
       toast.success("Log sent to host.");
-    } catch (e: any) {
-      toast.error(`Failed to send log: ${e.message}`);
+    } catch (e: unknown) {
+      toast.error(`Failed to send log: ${e instanceof Error ? e.message : String(e)}`);
     }
   };
 
@@ -50,8 +50,8 @@ export function HostBridgeView({ app }: ToolComponentProps) {
       // Opening a generic helpful link, maybe the MCP docs
       await app.openLink({ url: "https://modelcontextprotocol.io/docs" });
       toast.success("Requested host to open link.");
-    } catch (e: any) {
-      toast.error(`Failed to open link: ${e.message}`);
+    } catch (e: unknown) {
+      toast.error(`Failed to open link: ${e instanceof Error ? e.message : String(e)}`);
     }
   };
 
@@ -83,8 +83,8 @@ export function HostBridgeView({ app }: ToolComponentProps) {
       } else {
         toast.success("Requested host to download file.");
       }
-    } catch (e: any) {
-      toast.error(`Failed to download file: ${e.message}`);
+    } catch (e: unknown) {
+      toast.error(`Failed to download file: ${e instanceof Error ? e.message : String(e)}`);
     }
   };
 
@@ -100,8 +100,8 @@ export function HostBridgeView({ app }: ToolComponentProps) {
     try {
       await app.requestTeardown();
       toast.success("Requested host to teardown app.");
-    } catch (e: any) {
-      toast.error(`Failed to request teardown: ${e.message}`);
+    } catch (e: unknown) {
+      toast.error(`Failed to request teardown: ${e instanceof Error ? e.message : String(e)}`);
     }
   };
 
@@ -121,8 +121,8 @@ export function HostBridgeView({ app }: ToolComponentProps) {
 
       const result = await app.requestDisplayMode({ mode: newMode });
       toast.success(`Requested display mode change to ${result.mode}.`);
-    } catch (e: any) {
-      toast.error(`Failed to request display mode change: ${e.message}`);
+    } catch (e: unknown) {
+      toast.error(`Failed to request display mode change: ${e instanceof Error ? e.message : String(e)}`);
     }
   };
 

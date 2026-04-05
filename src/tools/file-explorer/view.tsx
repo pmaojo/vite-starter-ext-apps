@@ -69,11 +69,11 @@ export function FileExplorerView({ app }: ToolComponentProps) {
       });
 
       if (result.isError) {
-        const errorText = result.content?.find((c) => c.type === "text") as any;
+        const errorText = result.content?.find((c) => c.type === "text") as { type: "text", text: string } | undefined;
         throw new Error(errorText?.text || "Unknown server error");
       }
 
-      const textContent = result.content?.find((c) => c.type === "text") as any;
+      const textContent = result.content?.find((c) => c.type === "text") as { type: "text", text: string } | undefined;
       if (!textContent) throw new Error("No content returned from server");
 
       const parsedData = JSON.parse(textContent.text);
@@ -81,9 +81,9 @@ export function FileExplorerView({ app }: ToolComponentProps) {
 
       setFiles(validatedFiles);
       setCurrentPath(subpath);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setError(err.message || "Failed to fetch files");
+      setError(err instanceof Error ? err.message : "Failed to fetch files");
       toast.error("Failed to load directory");
     } finally {
       setIsLoading(false);

@@ -24,8 +24,8 @@ export const ThreeJSTetrisTool: React.FC<ToolComponentProps> = ({
     try {
       const newMode = isFullscreen ? "inline" : "fullscreen";
       await app.requestDisplayMode({ mode: newMode });
-    } catch (e: any) {
-      toast.error(`Failed to request display mode change: ${e.message}`);
+    } catch (e: unknown) {
+      toast.error(`Failed to request display mode change: ${e instanceof Error ? e.message : String(e)}`);
     }
   };
 

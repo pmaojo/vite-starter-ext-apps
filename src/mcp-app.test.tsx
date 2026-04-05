@@ -3,16 +3,18 @@ import { render, screen } from "@testing-library/react";
 import { AppContent } from "./mcp-app";
 import { useMcp } from "./core/mcp/McpProvider";
 
+import type { App, McpUiHostContext } from "@modelcontextprotocol/ext-apps";
+
 vi.mock("./core/mcp/McpProvider", () => ({
   useMcp: vi.fn(),
-  McpProvider: ({ children }: any) => <div>{children}</div>,
+  McpProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
 vi.mock("react-i18next", async (importOriginal) => {
-  const actual: any = await importOriginal();
+  const actual: Record<string, unknown> = await importOriginal();
   return {
     ...actual,
-    useTranslation: () => ({ t: (key: string, options?: any) => {
+    useTranslation: () => ({ t: (key: string, options?: Record<string, unknown>) => {
       if (options && options.toolName) return `${key} ${options.toolName}`;
       return key;
     }}),
@@ -62,7 +64,7 @@ describe("AppContent", () => {
   it("should render no tool context state", () => {
     vi.mocked(useMcp).mockReturnValue({
       error: null,
-      app: {} as any,
+      app: {} as App,
       hostContext: undefined,
       toolResult: null,
     });
@@ -74,12 +76,12 @@ describe("AppContent", () => {
   it("should render tool not found state", () => {
     vi.mocked(useMcp).mockReturnValue({
       error: null,
-      app: {} as any,
+      app: {} as App,
       hostContext: {
         toolInfo: {
           tool: { name: "unknown-tool" }
         }
-      } as any,
+      } as unknown as McpUiHostContext,
       toolResult: null,
     });
 
@@ -90,12 +92,12 @@ describe("AppContent", () => {
   it("should render actual tool component", () => {
     vi.mocked(useMcp).mockReturnValue({
       error: null,
-      app: {} as any,
+      app: {} as App,
       hostContext: {
         toolInfo: {
           tool: { name: "test-tool" }
         }
-      } as any,
+      } as unknown as McpUiHostContext,
       toolResult: null,
     });
 

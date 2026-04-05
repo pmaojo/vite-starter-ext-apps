@@ -38,15 +38,15 @@ describe("McpProvider callbacks", () => {
   });
 
   it("registers callbacks properly and handles them", () => {
-    let appCallbacks: any = {};
+    const appCallbacks: Record<string, (...args: unknown[]) => void> = {};
     const mockApp = {
       getHostContext: () => ({ appInfo: { name: "TestHost" } }) as unknown as McpUiHostContext,
-      set onteardown(cb: any) { appCallbacks.onteardown = cb; },
-      set ontoolinput(cb: any) { appCallbacks.ontoolinput = cb; },
-      set ontoolresult(cb: any) { appCallbacks.ontoolresult = cb; },
-      set ontoolcancelled(cb: any) { appCallbacks.ontoolcancelled = cb; },
-      set onerror(cb: any) { appCallbacks.onerror = cb; },
-      set onhostcontextchanged(cb: any) { appCallbacks.onhostcontextchanged = cb; },
+      set onteardown(cb: () => void) { appCallbacks.onteardown = cb; },
+      set ontoolinput(cb: (input: unknown) => void) { appCallbacks.ontoolinput = cb; },
+      set ontoolresult(cb: (result: unknown) => void) { appCallbacks.ontoolresult = cb; },
+      set ontoolcancelled(cb: (reason: unknown) => void) { appCallbacks.ontoolcancelled = cb; },
+      set onerror(cb: (error: Error) => void) { appCallbacks.onerror = cb as (...args: unknown[]) => void; },
+      set onhostcontextchanged(cb: () => void) { appCallbacks.onhostcontextchanged = cb; },
     } as unknown as App;
 
     vi.mocked(mcpReact.useApp).mockImplementation((opts) => {
