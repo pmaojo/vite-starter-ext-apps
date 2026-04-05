@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import type { ToolComponentProps } from "@/core/framework/tool-contract";
 import {
   Card,
@@ -57,7 +57,7 @@ export function FileExplorerView({ app }: ToolComponentProps) {
    * Fetches directory contents from the backend.
    * Demonstrates the `callServerTool` SDK capability.
    */
-  const fetchFiles = async (subpath: string) => {
+  const fetchFiles = useCallback(async (subpath: string) => {
     if (!app) return;
     setIsLoading(true);
     setError(null);
@@ -88,15 +88,14 @@ export function FileExplorerView({ app }: ToolComponentProps) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [app]);
 
   // Initial fetch
   useEffect(() => {
     if (app) {
       fetchFiles("");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [app]);
+  }, [app, fetchFiles]);
 
   const handleNavigate = (entry: FileEntry) => {
     if (entry.isDirectory) {

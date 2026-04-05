@@ -14,22 +14,14 @@ export function useServerTool(
   toolName: string,
   hostProvidedResult: CallToolResult | null
 ): UseServerToolResult {
-  const [lastHostResult, setLastHostResult] = useState<CallToolResult | null>(
-    hostProvidedResult
-  );
   const [manualResult, setManualResult] = useState<CallToolResult | null>(null);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // If the host passed down a new toolResult, override our manual result tracking
+  // When the host provides a new result, clear any manual result so the host takes precedence
   useEffect(() => {
-    if (hostProvidedResult !== lastHostResult) {
-      setLastHostResult(hostProvidedResult);
-      setManualResult(null); // Clear manual result so host result takes precedence
-      setIsError(false);
-    }
-    // lastHostResult intentionally omitted — we only want to react to host-driven changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setManualResult(null);
+    setIsError(false);
   }, [hostProvidedResult]);
 
   const executeTool = useCallback(
