@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import type { ToolComponentProps } from "@/core/framework/tool-contract";
 import {
   Card,
@@ -57,46 +57,52 @@ export function FileExplorerView({ app }: ToolComponentProps) {
    * Fetches directory contents from the backend.
    * Demonstrates the `callServerTool` SDK capability.
    */
-  const fetchFiles = async (subpath: string) => {
-    if (!app) return;
-    setIsLoading(true);
-    setError(null);
-    try {
-      // Type-safe call to the backend
-      const result = await app.callServerTool({
-        name: "list-files",
-        arguments: { subpath },
-      });
+  const fetchFiles = useCallback(
+    async (subpath: string) => {
+      if (!app) return;
+      setIsLoading(true);
+      setError(null);
+      try {
+        // Type-safe call to the backend
+        const result = await app.callServerTool({
+          name: "list-files",
+          arguments: { subpath },
+        });
 
-      if (result.isError) {
-        const errorText = result.content?.find((c) => c.type === "text") as { type: "text", text: string } | undefined;
-        throw new Error(errorText?.text || "Unknown server error");
+        if (result.isError) {
+          const errorText = result.content?.find((c) => c.type === "text") as
+            | { type: "text"; text: string }
+            | undefined;
+          throw new Error(errorText?.text || "Unknown server error");
+        }
+
+        const textContent = result.content?.find((c) => c.type === "text") as
+          | { type: "text"; text: string }
+          | undefined;
+        if (!textContent) throw new Error("No content returned from server");
+
+        const parsedData = JSON.parse(textContent.text);
+        const validatedFiles = ListFilesResponseSchema.parse(parsedData);
+
+        setFiles(validatedFiles);
+        setCurrentPath(subpath);
+      } catch (err: unknown) {
+        console.error(err);
+        setError(err instanceof Error ? err.message : "Failed to fetch files");
+        toast.error("Failed to load directory");
+      } finally {
+        setIsLoading(false);
       }
-
-      const textContent = result.content?.find((c) => c.type === "text") as { type: "text", text: string } | undefined;
-      if (!textContent) throw new Error("No content returned from server");
-
-      const parsedData = JSON.parse(textContent.text);
-      const validatedFiles = ListFilesResponseSchema.parse(parsedData);
-
-      setFiles(validatedFiles);
-      setCurrentPath(subpath);
-    } catch (err: unknown) {
-      console.error(err);
-      setError(err instanceof Error ? err.message : "Failed to fetch files");
-      toast.error("Failed to load directory");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+    [app]
+  );
 
   // Initial fetch
   useEffect(() => {
     if (app) {
       fetchFiles("");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [app]);
+  }, [app, fetchFiles]);
 
   const handleNavigate = (entry: FileEntry) => {
     if (entry.isDirectory) {

@@ -185,36 +185,33 @@ const MODULES: Module[] = [
 ];
 
 export function LearnMcpView({}: ToolComponentProps) {
-  // Load state from localStorage using lazy initialization
-  const [points, setPoints] = useState(() => {
-    try {
-      const saved = localStorage.getItem("learnMcpState:v1");
-      if (saved) return JSON.parse(saved).points || 0;
-    } catch {
-      // ignore
+  // Single localStorage read on mount — all persisted state in one object
+  const [{ points, completedModules, earnedBadges }, setGameState] = useState(
+    () => {
+      try {
+        const raw = localStorage.getItem("learnMcpState:v1");
+        if (raw) {
+          const parsed = JSON.parse(raw) as {
+            points?: number;
+            completedModules?: string[];
+            earnedBadges?: string[];
+          };
+          return {
+            points: parsed.points ?? 0,
+            completedModules: parsed.completedModules ?? [],
+            earnedBadges: parsed.earnedBadges ?? [],
+          };
+        }
+      } catch {
+        // ignore
+      }
+      return {
+        points: 0,
+        completedModules: [] as string[],
+        earnedBadges: [] as string[],
+      };
     }
-    return 0;
-  });
-
-  const [completedModules, setCompletedModules] = useState<string[]>(() => {
-    try {
-      const saved = localStorage.getItem("learnMcpState:v1");
-      if (saved) return JSON.parse(saved).completedModules || [];
-    } catch {
-      // ignore
-    }
-    return [];
-  });
-
-  const [earnedBadges, setEarnedBadges] = useState<string[]>(() => {
-    try {
-      const saved = localStorage.getItem("learnMcpState:v1");
-      if (saved) return JSON.parse(saved).earnedBadges || [];
-    } catch {
-      // ignore
-    }
-    return [];
-  });
+  );
 
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
 
@@ -238,15 +235,21 @@ export function LearnMcpView({}: ToolComponentProps) {
 
   const handleCompleteModule = (module: Module) => {
     if (!completedModules.includes(module.id)) {
-      setCompletedModules((prev: string[]) => [...prev, module.id]);
-      setPoints((prev: number) => prev + module.points);
+      const isNewBadge =
+        !!module.badgeId && !earnedBadges.includes(module.badgeId);
+      setGameState((prev) => ({
+        completedModules: [...prev.completedModules, module.id],
+        points: prev.points + module.points,
+        earnedBadges: isNewBadge
+          ? [...prev.earnedBadges, module.badgeId!]
+          : prev.earnedBadges,
+      }));
 
       toast.success(
         `Completed "${module.title}"! Earned ${module.points} points.`
       );
 
-      if (module.badgeId && !earnedBadges.includes(module.badgeId)) {
-        setEarnedBadges((prev: string[]) => [...prev, module.badgeId!]);
+      if (isNewBadge) {
         const badgeDef = BADGES[module.badgeId!];
         toast(`New Badge Earned: ${badgeDef?.name || module.badgeId}`, {
           icon: <Award className="w-5 h-5 text-yellow-500" />,
@@ -257,9 +260,7 @@ export function LearnMcpView({}: ToolComponentProps) {
   };
 
   const handleReset = () => {
-    setPoints(0);
-    setCompletedModules([]);
-    setEarnedBadges([]);
+    setGameState({ points: 0, completedModules: [], earnedBadges: [] });
     setActiveModuleId(null);
     localStorage.removeItem("learnMcpState:v1");
     toast.info("Progress reset.");
