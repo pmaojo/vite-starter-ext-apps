@@ -1,4 +1,4 @@
-import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
+import { Meta, ColorPalette, ColorItem } from "@storybook/blocks";
 
 <Meta title="Guía de Diseño/Colores" />
 
@@ -14,22 +14,34 @@ Los colores semánticos se utilizan para transmitir significado a través de la 
   <ColorItem
     title="Primario"
     subtitle="--primary"
-    colors={{ Default: 'hsl(var(--primary))', Foreground: 'hsl(var(--primary-foreground))' }}
+    colors={{
+      Default: "hsl(var(--primary))",
+      Foreground: "hsl(var(--primary-foreground))",
+    }}
   />
   <ColorItem
     title="Secundario"
     subtitle="--secondary"
-    colors={{ Default: 'hsl(var(--secondary))', Foreground: 'hsl(var(--secondary-foreground))' }}
+    colors={{
+      Default: "hsl(var(--secondary))",
+      Foreground: "hsl(var(--secondary-foreground))",
+    }}
   />
   <ColorItem
     title="Destructivo (Peligro)"
     subtitle="--destructive"
-    colors={{ Default: 'hsl(var(--destructive))', Foreground: 'hsl(var(--destructive-foreground))' }}
+    colors={{
+      Default: "hsl(var(--destructive))",
+      Foreground: "hsl(var(--destructive-foreground))",
+    }}
   />
   <ColorItem
     title="Mutado (Desactivado/Fondo)"
     subtitle="--muted"
-    colors={{ Default: 'hsl(var(--muted))', Foreground: 'hsl(var(--muted-foreground))' }}
+    colors={{
+      Default: "hsl(var(--muted))",
+      Foreground: "hsl(var(--muted-foreground))",
+    }}
   />
 </ColorPalette>
 
@@ -41,17 +53,23 @@ Estos colores estructuran la jerarquía de la página.
   <ColorItem
     title="Fondo Principal"
     subtitle="--background"
-    colors={{ Fondo: 'hsl(var(--background))', Texto: 'hsl(var(--foreground))' }}
+    colors={{
+      Fondo: "hsl(var(--background))",
+      Texto: "hsl(var(--foreground))",
+    }}
   />
   <ColorItem
     title="Superficie de Tarjeta"
     subtitle="--card"
-    colors={{ Fondo: 'hsl(var(--card))', Texto: 'hsl(var(--card-foreground))' }}
+    colors={{ Fondo: "hsl(var(--card))", Texto: "hsl(var(--card-foreground))" }}
   />
   <ColorItem
     title="Ventanas Emergentes (Popover)"
     subtitle="--popover"
-    colors={{ Fondo: 'hsl(var(--popover))', Texto: 'hsl(var(--popover-foreground))' }}
+    colors={{
+      Fondo: "hsl(var(--popover))",
+      Texto: "hsl(var(--popover-foreground))",
+    }}
   />
 </ColorPalette>
 
@@ -63,18 +81,19 @@ Se utilizan para delimitar componentes y crear campos de entrada de datos.
   <ColorItem
     title="Bordes y Separadores"
     subtitle="--border / --input"
-    colors={{ Border: 'hsl(var(--border))', Input: 'hsl(var(--input))' }}
+    colors={{ Border: "hsl(var(--border))", Input: "hsl(var(--input))" }}
   />
   <ColorItem
     title="Enfoque (Focus Ring)"
     subtitle="--ring"
-    colors={{ Ring: 'hsl(var(--ring))' }}
+    colors={{ Ring: "hsl(var(--ring))" }}
   />
 </ColorPalette>
 
 ## Consejos para Desarrolladores
 
 Para utilizar estos colores en componentes de Tailwind CSS, simplemente usa las clases de utilidad generadas. Por ejemplo:
+
 - `bg-primary` para aplicar el color de fondo primario.
 - `text-destructive` para aplicar el color de texto rojo de advertencia.
 - `border-border` para aplicar el color sutil de los bordes.

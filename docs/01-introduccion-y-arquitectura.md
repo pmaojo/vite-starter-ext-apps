@@ -9,6 +9,7 @@ En un ecosistema basado en **Model Context Protocol (MCP)**, es un error muy com
 > **El Servidor y el Host NO son la aplicación frontend (MCP App).**
 
 Para entenderlo, imagina un restaurante:
+
 1. **El Host (El Cliente/Comensal):** Es el sistema que _inicia_ la petición. Ejemplos de Hosts son la aplicación de escritorio de Claude, Cursor o cualquier LLM que pueda hablar el protocolo MCP. El Host decide qué herramienta llamar, pero no sabe cómo hacer el trabajo duro.
 2. **El Servidor MCP (La Cocina):** Es la aplicación backend (normalmente escrita en Node.js, Python, etc.). En nuestro proyecto, esto vive en archivos como `server.ts` o `main.ts`. El servidor expone "Herramientas" (Tools) y "Recursos" al Host.
 3. **La Extensión de App / UI (El Menú Interactivo):** Es el **Frontend** construido con React y Vite. Es el código que vamos a explicar en estas guías. Esta UI se renderiza _dentro_ o _a través_ del Host cuando el usuario interactúa con una herramienta que posee una interfaz gráfica asociada.
@@ -29,6 +30,7 @@ Cuando desarrollas la parte de Extensión UI (`ext-apps`), tu código vive en el
 Este proyecto se centra en crear esa "Capa de Presentación". Todo lo que veas dentro de carpetas como `src/` (y en general, lo gestionado por Vite) está destinado a compilarse en una pequeña y eficiente aplicación web de una sola página (SPA).
 
 A lo largo de este proyecto utilizamos:
+
 - **React:** Como librería central para crear componentes interactivos.
 - **Vite:** Como nuestro empaquetador ultrarrápido (del cual hablaremos en detalle en la siguiente guía).
 - **TailwindCSS y Shadcn UI:** Para dar un estilo moderno y consistente, muy alineado a guías de diseño como las de ChatGPT u OpenAI.

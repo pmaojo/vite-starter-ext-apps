@@ -1,5 +1,12 @@
 import { Button } from "@/shared/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/shared/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/shared/components/ui/card";
 
 interface ActionCardProps {
   title: string;
@@ -8,7 +15,12 @@ interface ActionCardProps {
   onAction: () => void;
 }
 
-export function ActionCard({ title, description, buttonText = "Execute", onAction }: ActionCardProps) {
+export function ActionCard({
+  title,
+  description,
+  buttonText = "Execute",
+  onAction,
+}: ActionCardProps) {
   return (
     <Card className="flex flex-col h-full">
       <CardHeader>
@@ -19,7 +31,9 @@ export function ActionCard({ title, description, buttonText = "Execute", onActio
         {/* Content area if needed later */}
       </CardContent>
       <CardFooter>
-        <Button onClick={onAction} className="w-full">{buttonText}</Button>
+        <Button onClick={onAction} className="w-full">
+          {buttonText}
+        </Button>
       </CardFooter>
     </Card>
   );

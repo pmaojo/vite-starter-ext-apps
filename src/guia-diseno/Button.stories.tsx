@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from '@/shared/components/ui/button';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "@/shared/components/ui/button";
 
 /**
  * El componente `Button` es el principal llamado a la acción (Call to Action) en la interfaz.
@@ -13,27 +13,35 @@ import { Button } from '@/shared/components/ui/button';
  * - Para navegación de texto simple dentro de un párrafo (usa etiquetas `<a>`).
  */
 const meta: Meta<typeof Button> = {
-  title: 'Guía de Diseño/Componentes/Button',
+  title: "Guía de Diseño/Componentes/Button",
   component: Button,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     variant: {
-      description: 'El estilo visual del botón, que comunica su propósito.',
-      control: 'select',
-      options: ['default', 'secondary', 'destructive', 'outline', 'ghost', 'link'],
+      description: "El estilo visual del botón, que comunica su propósito.",
+      control: "select",
+      options: [
+        "default",
+        "secondary",
+        "destructive",
+        "outline",
+        "ghost",
+        "link",
+      ],
     },
     size: {
-      description: 'El tamaño del botón.',
-      control: 'select',
-      options: ['default', 'sm', 'lg', 'icon'],
+      description: "El tamaño del botón.",
+      control: "select",
+      options: ["default", "sm", "lg", "icon"],
     },
     disabled: {
-      description: 'Deshabilita el botón, impidiendo la interacción del usuario.',
-      control: 'boolean',
+      description:
+        "Deshabilita el botón, impidiendo la interacción del usuario.",
+      control: "boolean",
     },
     children: {
-      description: 'El contenido interno del botón (texto o iconos).',
-      control: 'text',
+      description: "El contenido interno del botón (texto o iconos).",
+      control: "text",
     },
   },
 };
@@ -47,8 +55,8 @@ type Story = StoryObj<typeof Button>;
  */
 export const Primario: Story = {
   args: {
-    variant: 'default',
-    children: 'Guardar Cambios',
+    variant: "default",
+    children: "Guardar Cambios",
   },
 };
 
@@ -58,8 +66,8 @@ export const Primario: Story = {
  */
 export const Secundario: Story = {
   args: {
-    variant: 'secondary',
-    children: 'Cancelar',
+    variant: "secondary",
+    children: "Cancelar",
   },
 };
 
@@ -69,8 +77,8 @@ export const Secundario: Story = {
  */
 export const Destructivo: Story = {
   args: {
-    variant: 'destructive',
-    children: 'Eliminar Cuenta',
+    variant: "destructive",
+    children: "Eliminar Cuenta",
   },
 };
 
@@ -79,8 +87,8 @@ export const Destructivo: Story = {
  */
 export const Contorno: Story = {
   args: {
-    variant: 'outline',
-    children: 'Exportar CSV',
+    variant: "outline",
+    children: "Exportar CSV",
   },
 };
 
@@ -89,7 +97,7 @@ export const Contorno: Story = {
  */
 export const Fantasma: Story = {
   args: {
-    variant: 'ghost',
-    children: 'Copiar enlace',
+    variant: "ghost",
+    children: "Copiar enlace",
   },
 };

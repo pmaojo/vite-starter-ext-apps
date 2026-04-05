@@ -8,6 +8,6 @@ export const getTimeManifest: ToolManifest = {
   version: "1.0.0",
   component: GetTimeTool,
   config: {
-    requiredPermissions: ['callServerTool']
-  }
+    requiredPermissions: ["callServerTool"],
+  },
 };

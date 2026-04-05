@@ -9,25 +9,41 @@ export interface LogMessage {
 
 let _app: App | null = null;
 
-const sendLog = async (level: LogMessage["level"], message: string, data?: any) => {
+const sendLog = async (
+  level: LogMessage["level"],
+  message: string,
+  data?: any
+) => {
   const logMessage: LogMessage = { level, message, data };
 
   if (level === "error") {
-      console.error(message, data);
-      toast.error(message, { description: data ? JSON.stringify(data) : undefined });
+    console.error(message, data);
+    toast.error(message, {
+      description: data ? JSON.stringify(data) : undefined,
+    });
   } else if (level === "warn") {
-      console.warn(message, data);
-      toast.warning(message, { description: data ? JSON.stringify(data) : undefined });
+    console.warn(message, data);
+    toast.warning(message, {
+      description: data ? JSON.stringify(data) : undefined,
+    });
   } else if (level === "info") {
-      console.info(message, data);
-      toast.info(message, { description: data ? JSON.stringify(data) : undefined });
+    console.info(message, data);
+    toast.info(message, {
+      description: data ? JSON.stringify(data) : undefined,
+    });
   } else {
-      console.debug(message, data);
+    console.debug(message, data);
   }
 
   if (_app) {
     try {
-        const sendLevel = level === "warn" || level === "error" || level === "info" || level === "debug" ? level : "info";
+      const sendLevel =
+        level === "warn" ||
+        level === "error" ||
+        level === "info" ||
+        level === "debug"
+          ? level
+          : "info";
       await _app.sendLog({ level: sendLevel as any, data: logMessage });
     } catch (e) {
       console.error("Failed to send log to MCP host", e);
@@ -54,5 +70,5 @@ export const logger = {
 
   debug: async (message: string, data?: any) => {
     await sendLog("debug", message, data);
-  }
+  },
 };

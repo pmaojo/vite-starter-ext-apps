@@ -1,4 +1,4 @@
-import ControlButton from './ControlButton';
+import ControlButton from "./ControlButton";
 
 /**
  * 移动端模拟键盘
@@ -13,7 +13,7 @@ const MobileControlGroup = () => {
 
   const simulateKeyPress = (key: string) => {
     return () => {
-      const event = new KeyboardEvent('keydown', {
+      const event = new KeyboardEvent("keydown", {
         key,
         bubbles: true,
       });

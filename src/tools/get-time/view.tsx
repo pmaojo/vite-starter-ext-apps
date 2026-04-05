@@ -1,13 +1,23 @@
 import { useTranslation } from "react-i18next";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/shared/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { useServerTool } from "@/shared/hooks/useServerTool";
 import type { ToolComponentProps } from "@/core/framework/tool-contract";
 
-function extractTime(callToolResult: CallToolResult | null | undefined): string | null {
+function extractTime(
+  callToolResult: CallToolResult | null | undefined
+): string | null {
   if (!callToolResult) return null;
-  const content = callToolResult.content?.find((c) => c.type === "text") as { text: string } | undefined;
+  const content = callToolResult.content?.find((c) => c.type === "text") as
+    | { text: string }
+    | undefined;
   return content?.text ?? null;
 }
 
@@ -34,7 +44,7 @@ export function GetTimeTool({ app, toolResult }: ToolComponentProps) {
 
   const serverTimeDisplay = isError
     ? t("getTime.error")
-    : (timeText || t("getTime.loading"));
+    : timeText || t("getTime.loading");
 
   return (
     <Card className="w-full max-w-md mx-auto mt-8">
@@ -42,7 +52,9 @@ export function GetTimeTool({ app, toolResult }: ToolComponentProps) {
         <CardTitle>{t("getTime.title")}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-muted-foreground mb-2">{t("getTime.serverTime")}</p>
+        <p className="text-sm text-muted-foreground mb-2">
+          {t("getTime.serverTime")}
+        </p>
         <p className="text-2xl font-mono">{serverTimeDisplay}</p>
       </CardContent>
       <CardFooter>

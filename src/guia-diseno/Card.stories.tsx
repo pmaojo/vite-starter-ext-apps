@@ -1,6 +1,13 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/shared/components/ui/card';
-import { Button } from '@/shared/components/ui/button';
+import type { Meta, StoryObj } from "@storybook/react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
 
 /**
  * El componente `Card` se utiliza para agrupar información relacionada de manera visualmente contenida.
@@ -15,9 +22,9 @@ import { Button } from '@/shared/components/ui/button';
  * - No sobrecargues una tarjeta con demasiada información; manténla enfocada a un solo concepto.
  */
 const meta: Meta<typeof Card> = {
-  title: 'Guía de Diseño/Componentes/Card',
+  title: "Guía de Diseño/Componentes/Card",
   component: Card,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 };
 
 export default meta;
@@ -31,11 +38,14 @@ export const TarjetaCompleta: Story = {
     <Card className="w-[350px]">
       <CardHeader>
         <CardTitle>Crear Proyecto</CardTitle>
-        <CardDescription>Despliega tu nuevo proyecto con un solo clic.</CardDescription>
+        <CardDescription>
+          Despliega tu nuevo proyecto con un solo clic.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          Esta es la sección de contenido donde normalmente colocarías información detallada o pequeños formularios.
+          Esta es la sección de contenido donde normalmente colocarías
+          información detallada o pequeños formularios.
         </p>
       </CardContent>
       <CardFooter className="flex justify-between">

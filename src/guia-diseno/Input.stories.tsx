@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Input } from '@/shared/components/ui/input';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Input } from "@/shared/components/ui/input";
 
 /**
  * El componente `Input` permite a los usuarios ingresar texto o datos en formularios.
@@ -13,22 +13,24 @@ import { Input } from '@/shared/components/ui/input';
  * - Soporta todos los tipos nativos de HTML (`type="text"`, `"password"`, `"email"`, etc.).
  */
 const meta: Meta<typeof Input> = {
-  title: 'Guía de Diseño/Componentes/Input',
+  title: "Guía de Diseño/Componentes/Input",
   component: Input,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     type: {
-      description: 'El tipo de entrada HTML.',
-      control: 'select',
-      options: ['text', 'password', 'email', 'number'],
+      description: "El tipo de entrada HTML.",
+      control: "select",
+      options: ["text", "password", "email", "number"],
     },
     placeholder: {
-      description: 'Texto de ayuda temporal visible cuando el campo está vacío.',
-      control: 'text',
+      description:
+        "Texto de ayuda temporal visible cuando el campo está vacío.",
+      control: "text",
     },
     disabled: {
-      description: 'Deshabilita el campo, mostrándolo en gris e impidiendo escritura.',
-      control: 'boolean',
+      description:
+        "Deshabilita el campo, mostrándolo en gris e impidiendo escritura.",
+      control: "boolean",
     },
   },
 };
@@ -41,8 +43,8 @@ type Story = StoryObj<typeof Input>;
  */
 export const Estandar: Story = {
   args: {
-    type: 'text',
-    placeholder: 'Introduce tu nombre...',
+    type: "text",
+    placeholder: "Introduce tu nombre...",
   },
 };
 
@@ -51,8 +53,8 @@ export const Estandar: Story = {
  */
 export const Contrasena: Story = {
   args: {
-    type: 'password',
-    placeholder: '••••••••',
+    type: "password",
+    placeholder: "••••••••",
   },
 };
 
@@ -61,9 +63,9 @@ export const Contrasena: Story = {
  */
 export const Deshabilitado: Story = {
   args: {
-    type: 'text',
-    placeholder: 'No puedes editar esto',
+    type: "text",
+    placeholder: "No puedes editar esto",
     disabled: true,
-    value: 'Valor de solo lectura',
+    value: "Valor de solo lectura",
   },
 };

@@ -18,6 +18,6 @@ export const fileExplorerManifest: ToolManifest = {
   version: "1.0.0",
   component: FileExplorerView,
   config: {
-    requiredPermissions: ['callServerTool']
-  }
+    requiredPermissions: ["callServerTool"],
+  },
 };

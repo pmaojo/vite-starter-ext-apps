@@ -18,6 +18,7 @@ import { hostBridgeManifest } from "./host-bridge/manifest";
 import { fileExplorerManifest } from "./file-explorer/manifest";
 import { learnMcpManifest } from "./learn-mcp/manifest";
 import { threejsTetrisManifest } from "./threejs-tetris/manifest";
+import { docsManifest } from "./docs/manifest";
 
 /**
  * Array of all actively registered tool manifests.
@@ -28,6 +29,7 @@ const manifests: ToolManifest[] = [
   fileExplorerManifest,
   learnMcpManifest,
   threejsTetrisManifest,
+  docsManifest,
 ];
 
 /**
@@ -37,10 +39,11 @@ const manifests: ToolManifest[] = [
  * Used by the main router (`AppContent` in `mcp-app.tsx`) to dynamically resolve and render
  * the correct component based on the host's contextual injection.
  */
-export const TOOL_COMPONENTS: Record<string, ToolManifest["component"]> = manifests.reduce(
-  (acc, manifest) => {
-    acc[manifest.slug] = manifest.component;
-    return acc;
-  },
-  {} as Record<string, ToolManifest["component"]>
-);
+export const TOOL_COMPONENTS: Record<string, ToolManifest["component"]> =
+  manifests.reduce(
+    (acc, manifest) => {
+      acc[manifest.slug] = manifest.component;
+      return acc;
+    },
+    {} as Record<string, ToolManifest["component"]>
+  );
