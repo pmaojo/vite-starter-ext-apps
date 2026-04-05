@@ -184,37 +184,50 @@ const MODULES: Module[] = [
   },
 ];
 
+interface LearnMcpProgress {
+  points: number;
+  completedModules: string[];
+  earnedBadges: string[];
+}
+
+function loadSavedProgress(): LearnMcpProgress {
+  try {
+    const saved = localStorage.getItem("learnMcpState:v1");
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      return {
+        points: parsed.points || 0,
+        completedModules: parsed.completedModules || [],
+        earnedBadges: parsed.earnedBadges || [],
+      };
+    }
+  } catch {
+    // ignore
+  }
+  return { points: 0, completedModules: [], earnedBadges: [] };
+}
+
 export function LearnMcpView({}: ToolComponentProps) {
-  // Load state from localStorage using lazy initialization
-  const [points, setPoints] = useState(() => {
-    try {
-      const saved = localStorage.getItem("learnMcpState:v1");
-      if (saved) return JSON.parse(saved).points || 0;
-    } catch {
-      // ignore
-    }
-    return 0;
-  });
+  // Load all progress state from a single localStorage read
+  const [{ points, completedModules, earnedBadges }, setProgress] = useState<LearnMcpProgress>(loadSavedProgress);
 
-  const [completedModules, setCompletedModules] = useState<string[]>(() => {
-    try {
-      const saved = localStorage.getItem("learnMcpState:v1");
-      if (saved) return JSON.parse(saved).completedModules || [];
-    } catch {
-      // ignore
-    }
-    return [];
-  });
+  const setPoints = (updater: number | ((prev: number) => number)) =>
+    setProgress((prev) => ({
+      ...prev,
+      points: typeof updater === "function" ? updater(prev.points) : updater,
+    }));
 
-  const [earnedBadges, setEarnedBadges] = useState<string[]>(() => {
-    try {
-      const saved = localStorage.getItem("learnMcpState:v1");
-      if (saved) return JSON.parse(saved).earnedBadges || [];
-    } catch {
-      // ignore
-    }
-    return [];
-  });
+  const setCompletedModules = (updater: string[] | ((prev: string[]) => string[])) =>
+    setProgress((prev) => ({
+      ...prev,
+      completedModules: typeof updater === "function" ? updater(prev.completedModules) : updater,
+    }));
+
+  const setEarnedBadges = (updater: string[] | ((prev: string[]) => string[])) =>
+    setProgress((prev) => ({
+      ...prev,
+      earnedBadges: typeof updater === "function" ? updater(prev.earnedBadges) : updater,
+    }));
 
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
 
@@ -225,8 +238,8 @@ export function LearnMcpView({}: ToolComponentProps) {
         "learnMcpState:v1",
         JSON.stringify({ points, completedModules, earnedBadges })
       );
-    } catch (e) {
-      console.error("Failed to save state", e);
+    } catch {
+      // ignore — localStorage may be unavailable (e.g. private browsing, quota exceeded)
     }
   }, [points, completedModules, earnedBadges]);
 
@@ -257,9 +270,7 @@ export function LearnMcpView({}: ToolComponentProps) {
   };
 
   const handleReset = () => {
-    setPoints(0);
-    setCompletedModules([]);
-    setEarnedBadges([]);
+    setProgress({ points: 0, completedModules: [], earnedBadges: [] });
     setActiveModuleId(null);
     localStorage.removeItem("learnMcpState:v1");
     toast.info("Progress reset.");
