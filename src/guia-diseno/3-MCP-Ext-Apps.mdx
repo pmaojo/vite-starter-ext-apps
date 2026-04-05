@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/blocks';
+import { Meta } from "@storybook/blocks";
 
 <Meta title="Guía de Diseño/Ext-Apps SDK y UX" />
 
@@ -23,12 +23,14 @@ Para asegurar que las experiencias se sientan nativas y predecibles, utilizamos 
 Este es el modo predeterminado. El contenido aparece directamente en el flujo de la conversación, siempre antes de la respuesta generada por el modelo.
 
 **Cuándo usarlo:**
+
 - Decisiones rápidas o confirmaciones (ej. confirmar una reserva).
 - Mostrar datos estructurados (ej. un resumen de orden o un mapa pequeño).
 - Herramientas autocontenidas (ej. un reproductor de audio).
 
 **Tipos de Componentes Inline:**
-- **Inline Card (Tarjeta en línea):** Widgets de un solo propósito. Soportan interacción directa (ej. editar un texto rápidamente). *Regla de oro: Máximo dos botones (Call to Actions) y sin navegación profunda (sin pestañas o scroll interno).*
+
+- **Inline Card (Tarjeta en línea):** Widgets de un solo propósito. Soportan interacción directa (ej. editar un texto rápidamente). _Regla de oro: Máximo dos botones (Call to Actions) y sin navegación profunda (sin pestañas o scroll interno)._
 - **Inline Carousel (Carrusel en línea):** Una serie de tarjetas una al lado de la otra. Ideal para presentar entre 3 y 8 opciones comparables (ej. restaurantes, listas de reproducción).
 
 ### 2. Fullscreen (Pantalla Completa)
@@ -36,10 +38,11 @@ Este es el modo predeterminado. El contenido aparece directamente en el flujo de
 Son experiencias inmersivas que se expanden más allá de una tarjeta. Lo más importante aquí es que **el compositor de texto (el input de chat) de ChatGPT permanece visible**. Esto permite al usuario seguir "hablando con la app" mientras explora la vista.
 
 **Cuándo usarlo:**
+
 - Flujos de trabajo de múltiples pasos o tareas ricas (ej. editar un lienzo interactivo, un mapa explorable).
 - Navegar por contenido muy detallado (ej. listados de bienes raíces).
 
-*Regla de oro: Diseña pensando en el compositor de texto. La experiencia debe reaccionar a comandos de voz o texto del usuario.*
+_Regla de oro: Diseña pensando en el compositor de texto. La experiencia debe reaccionar a comandos de voz o texto del usuario._
 
 ### 3. Picture-in-Picture (PiP)
 
@@ -52,13 +55,17 @@ Una ventana flotante y persistente optimizada para sesiones continuas (ej. juego
 Crear una gran aplicación no significa portar tu sitio web completo a un chat. Significa extraer el valor principal y adaptarlo al medio conversacional.
 
 ### 1. Extraer, no portar
+
 Concéntrate en las tareas atómicas que tus usuarios necesitan. En lugar de un panel de control complejo (dashboard), proporciona herramientas claras que acepten las entradas (inputs) necesarias para que el modelo tome la siguiente acción de forma confiada.
 
 ### 2. Diseñar para entradas conversacionales
+
 Los usuarios pueden llegar a tu App en medio de un chat, con intenciones claras ("Reserva la sala a las 3pm") o vagas ("Ayúdame a organizar un evento"). Tu interfaz debe soportar este contexto dinámico.
 
 ### 3. Optimizar para la conversación, no para la navegación
+
 El modelo de IA maneja el estado y el enrutamiento. Tu App debe proporcionar:
+
 - Acciones declarativas claras.
 - Respuestas concisas (listas o tablas breves en lugar de muros de texto).
 - Sugerencias útiles (follow-ups) para mantener al usuario en el flujo.
@@ -72,6 +79,7 @@ En nuestro proyecto, utilizamos un componente central de React provisto por el S
 ### Arquitectura de Micro-Manifiestos
 
 Nuestra base de código utiliza una arquitectura modular:
+
 - Cada herramienta (`Tool`) vive en su propio directorio dentro de \`src/tools/\`.
 - Expone un archivo \`manifest.ts\` que define su nombre (slug), título, descripción y el **Componente React** que lo renderiza.
 - Cuando el Host decide invocar una herramienta, pasa un contexto (\`hostContext\`) que incluye el \`toolName\`. Nuestro enrutador principal en \`src/core/engine/mcp-app.tsx\` lee este nombre y renderiza dinámicamente el componente correcto.

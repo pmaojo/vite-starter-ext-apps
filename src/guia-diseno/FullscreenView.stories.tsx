@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { FullscreenView } from '../shared/components/ui/fullscreen-view';
+import type { Meta, StoryObj } from "@storybook/react";
+import { FullscreenView } from "../shared/components/ui/fullscreen-view";
 
 const meta = {
-  title: 'Guía de Diseño/Layout/FullscreenView',
+  title: "Guía de Diseño/Layout/FullscreenView",
   component: FullscreenView,
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
     docs: {
       description: {
         component: `
@@ -22,10 +22,10 @@ The ChatGPT composer remains overlaid, allowing users to continue “talking to 
       story: {
         inline: false, // Force iframe rendering to simulate full screen
         iframeHeight: 600,
-      }
+      },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 } satisfies Meta<typeof FullscreenView>;
 
 export default meta;
@@ -33,8 +33,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    title: 'Interactive Map Workflow',
-    onClose: () => alert('Close clicked. In ChatGPT, this collapses the view back to inline.'),
+    title: "Interactive Map Workflow",
+    onClose: () =>
+      alert(
+        "Close clicked. In ChatGPT, this collapses the view back to inline."
+      ),
     children: (
       <div className="flex flex-col h-full items-center justify-center border-2 border-dashed rounded-xl p-8 text-center text-muted-foreground bg-muted/20">
         <svg
@@ -53,10 +56,13 @@ export const Default: Story = {
         </svg>
         <h3 className="text-xl font-bold mb-2">Rich Interactive Area</h3>
         <p className="max-w-md">
-          This area is ideal for complex charts, deep data exploration, or interactive canvases that require more space than an inline card provides.
+          This area is ideal for complex charts, deep data exploration, or
+          interactive canvases that require more space than an inline card
+          provides.
         </p>
         <p className="max-w-md mt-4 text-sm bg-background p-3 rounded-md border shadow-sm">
-          💡 <strong>Tip:</strong> Users will continue chatting with the model via the standard composer overlaid at the bottom of the screen.
+          💡 <strong>Tip:</strong> Users will continue chatting with the model
+          via the standard composer overlaid at the bottom of the screen.
         </p>
       </div>
     ),

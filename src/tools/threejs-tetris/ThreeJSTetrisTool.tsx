@@ -7,7 +7,10 @@ import "./app.scss";
 
 import type { ToolComponentProps } from "../../core/framework/tool-contract";
 
-export const ThreeJSTetrisTool: React.FC<ToolComponentProps> = ({ app, hostContext }) => {
+export const ThreeJSTetrisTool: React.FC<ToolComponentProps> = ({
+  app,
+  hostContext,
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const isFullscreen = hostContext?.displayMode === "fullscreen";
@@ -28,7 +31,7 @@ export const ThreeJSTetrisTool: React.FC<ToolComponentProps> = ({ app, hostConte
   return (
     <div
       ref={containerRef}
-      className={`relative w-full overflow-hidden bg-black flex items-center justify-center ${isFullscreen ? 'h-screen' : 'h-[600px] rounded-md border shadow-sm'}`}
+      className={`relative w-full overflow-hidden bg-black flex items-center justify-center ${isFullscreen ? "h-screen" : "h-[600px] rounded-md border shadow-sm"}`}
     >
       <Tetris />
 
@@ -39,7 +42,11 @@ export const ThreeJSTetrisTool: React.FC<ToolComponentProps> = ({ app, hostConte
         onClick={toggleFullscreen}
         title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
       >
-        {isFullscreen ? <Minimize className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
+        {isFullscreen ? (
+          <Minimize className="h-4 w-4" />
+        ) : (
+          <Maximize className="h-4 w-4" />
+        )}
       </Button>
     </div>
   );

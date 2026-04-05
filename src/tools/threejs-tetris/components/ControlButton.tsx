@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import type { ReactNode } from 'react';
+import { useState } from "react";
+import type { ReactNode } from "react";
 
 interface ButtonProps {
   children: ReactNode;
@@ -22,11 +22,12 @@ const ControlButton: React.FC<ButtonProps> = ({
   const [isActive, setIsActive] = useState(false);
 
   // rgba 转 rgb
-  const rgbBgColor = bgColor
-    .match(/^#([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i)
-    ?.slice(1)
-    .map((v) => parseInt(v, 16))
-    .join(",") || bgColor;
+  const rgbBgColor =
+    bgColor
+      .match(/^#([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i)
+      ?.slice(1)
+      .map((v) => parseInt(v, 16))
+      .join(",") || bgColor;
 
   const defaultStyle = {
     backgroundColor: bgColor,
@@ -34,7 +35,7 @@ const ControlButton: React.FC<ButtonProps> = ({
   };
 
   const activeStyle = {
-    transform: 'translate(4px, 4px)',
+    transform: "translate(4px, 4px)",
     boxShadow: `2px 0px 0px ${shadowColor}, 5px 0px 10px rgba(${rgbBgColor}, 0.3)`,
   };
 

@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { TOOL_COMPONENTS } from '../tools/registry';
+import type { Meta, StoryObj } from "@storybook/react";
+import { TOOL_COMPONENTS } from "../tools/registry";
 
 // Types to mock what the actual MCP Host provides
 import type { App, McpUiHostContext } from "@modelcontextprotocol/ext-apps";
@@ -36,7 +36,8 @@ const ToolsSandbox = ({
   // Crea un entorno de "Host" simulado.
   const mockApp = {
     // Simulamos la API del App de @modelcontextprotocol/ext-apps
-    sendMessage: (msg: string) => alert(`[Mock App] Sending message to host: ${msg}`),
+    sendMessage: (msg: string) =>
+      alert(`[Mock App] Sending message to host: ${msg}`),
     // ... más métodos podrían añadirse si las herramientas los necesitan
   } as unknown as App;
 
@@ -63,8 +64,12 @@ const ToolsSandbox = ({
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="bg-muted p-4 rounded-md text-sm text-muted-foreground">
-        <p><strong>Host Environment:</strong> Storybook Sandbox</p>
-        <p><strong>Mounted Tool:</strong> {selectedToolSlug}</p>
+        <p>
+          <strong>Host Environment:</strong> Storybook Sandbox
+        </p>
+        <p>
+          <strong>Mounted Tool:</strong> {selectedToolSlug}
+        </p>
       </div>
 
       <div className="border border-dashed p-6 rounded-xl relative">
@@ -77,27 +82,27 @@ const ToolsSandbox = ({
           toolResult={parsedToolResult}
           hostContext={mockHostContext}
         />
-
       </div>
     </div>
   );
 };
 
 const meta = {
-  title: 'Guía de Diseño/Herramientas (Tools)/Sandbox Host',
+  title: "Guía de Diseño/Herramientas (Tools)/Sandbox Host",
   component: ToolsSandbox,
   parameters: {
-    layout: 'padded',
+    layout: "padded",
   },
   argTypes: {
     selectedToolSlug: {
-      control: 'select',
+      control: "select",
       options: Object.keys(TOOL_COMPONENTS),
-      description: 'El slug (toolName) de la herramienta a renderizar.',
+      description: "El slug (toolName) de la herramienta a renderizar.",
     },
     mockToolResult: {
-      control: 'text',
-      description: 'JSON representando el CallToolResult devuelto por el servidor.',
+      control: "text",
+      description:
+        "JSON representando el CallToolResult devuelto por el servidor.",
     },
   },
 } satisfies Meta<typeof ToolsSandbox>;
@@ -107,45 +112,57 @@ type Story = StoryObj<typeof meta>;
 
 // Extraemos las claves disponibles para crear historias por defecto útiles
 const availableTools = Object.keys(TOOL_COMPONENTS);
-const firstTool = availableTools.length > 0 ? availableTools[0] : '';
+const firstTool = availableTools.length > 0 ? availableTools[0] : "";
 
 export const Default: Story = {
   args: {
     selectedToolSlug: firstTool,
-    mockToolResult: JSON.stringify({
-      content: [{ type: "text", text: "Mock data from server execution." }],
-    }, null, 2),
+    mockToolResult: JSON.stringify(
+      {
+        content: [{ type: "text", text: "Mock data from server execution." }],
+      },
+      null,
+      2
+    ),
   },
 };
 
 export const LearnMcpExample: Story = {
   args: {
-    selectedToolSlug: 'learn-mcp',
-    mockToolResult: JSON.stringify({
-      content: [
-        {
-          type: "text",
-          text: "Mock learn data"
-        }
-      ]
-    }, null, 2),
+    selectedToolSlug: "learn-mcp",
+    mockToolResult: JSON.stringify(
+      {
+        content: [
+          {
+            type: "text",
+            text: "Mock learn data",
+          },
+        ],
+      },
+      null,
+      2
+    ),
   },
 };
 
 // Si 'get-time' existe en el registro, proporcionamos una historia específica para él.
 export const GetTimeExample: Story = {
   args: {
-    selectedToolSlug: 'get-time',
-    mockToolResult: JSON.stringify({
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify({
-             currentTime: new Date().toISOString(),
-             timezone: "UTC"
-          })
-        }
-      ]
-    }, null, 2),
+    selectedToolSlug: "get-time",
+    mockToolResult: JSON.stringify(
+      {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify({
+              currentTime: new Date().toISOString(),
+              timezone: "UTC",
+            }),
+          },
+        ],
+      },
+      null,
+      2
+    ),
   },
 };

@@ -82,13 +82,16 @@ Alternatively, MCP apps can load external resources by defining [`_meta.ui.csp.r
 ## Deployment Notes
 
 ### Long-Running Environments (Recommended)
+
 For production deployments, we strongly recommend deploying this template (using `build:full`) to a traditional, long-running Node.js environment. Examples include:
+
 - **Render** (Web Services)
 - **Railway**
 - **Heroku**
 - **DigitalOcean App Platform** or a VPS
 
 ### Serverless Environments (Vercel, Netlify, AWS Lambda)
+
 **This application IS compatible with stateless Serverless Functions (e.g., Vercel).**
 
 This MCP server has been successfully tested and is currently running in production on Vercel. While Serverless environments do implement strict execution timeouts and destroy memory state between function invocations, Vercel's Node.js runtime and standard API configurations handle the Server-Sent Events (SSE) connections used by MCP well enough for typical stateless tool executions and standard interactions to succeed.

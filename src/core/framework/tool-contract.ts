@@ -49,6 +49,8 @@ export interface ToolManifest {
   component: React.ComponentType<ToolComponentProps>;
   config?: {
     isExperimental?: boolean;
-    requiredPermissions?: Array<'sendMessage' | 'sendLog' | 'openLink' | 'callServerTool'>;
+    requiredPermissions?: Array<
+      "sendMessage" | "sendLog" | "openLink" | "callServerTool"
+    >;
   };
 }

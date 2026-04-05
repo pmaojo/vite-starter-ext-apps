@@ -1,4 +1,4 @@
-import { Meta, Typeset } from '@storybook/blocks';
+import { Meta, Typeset } from "@storybook/blocks";
 
 <Meta title="Guía de Diseño/Tipografía" />
 
@@ -21,31 +21,73 @@ Utilizamos clases de utilidad de Tailwind CSS para aplicar tamaños, pesos y alt
     <p style={{ marginTop: '8px', color: '#64748b', fontSize: '0.875rem' }}>Clases: <code>text-4xl font-extrabold tracking-tight lg:text-5xl</code></p>
   </div>
 
-  ### Encabezado 2 (h2)
-  <div style={{ padding: '16px', border: '1px solid #e2e8f0', borderRadius: '8px', marginBottom: '16px' }}>
-    <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0" style={{ fontSize: '1.875rem', fontWeight: 600 }}>
-      Sección Importante
-    </h2>
-    <p style={{ marginTop: '8px', color: '#64748b', fontSize: '0.875rem' }}>Clases: <code>text-3xl font-semibold tracking-tight</code></p>
-  </div>
+### Encabezado 2 (h2)
 
-  ### Encabezado 3 (h3)
-  <div style={{ padding: '16px', border: '1px solid #e2e8f0', borderRadius: '8px', marginBottom: '16px' }}>
-    <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight" style={{ fontSize: '1.5rem', fontWeight: 600 }}>
-      Subsección
-    </h3>
-    <p style={{ marginTop: '8px', color: '#64748b', fontSize: '0.875rem' }}>Clases: <code>text-2xl font-semibold tracking-tight</code></p>
-  </div>
+<div
+  style={{
+    padding: "16px",
+    border: "1px solid #e2e8f0",
+    borderRadius: "8px",
+    marginBottom: "16px",
+  }}
+>
+  <h2
+    className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0"
+    style={{ fontSize: "1.875rem", fontWeight: 600 }}
+  >
+    Sección Importante
+  </h2>
+  <p style={{ marginTop: "8px", color: "#64748b", fontSize: "0.875rem" }}>
+    Clases: <code>text-3xl font-semibold tracking-tight</code>
+  </p>
+</div>
 
-  ### Párrafo Regular (p)
-  <div style={{ padding: '16px', border: '1px solid #e2e8f0', borderRadius: '8px', marginBottom: '16px' }}>
-    <p className="leading-7 [&:not(:first-child)]:mt-6" style={{ fontSize: '1rem', lineHeight: '1.75rem' }}>
-      Este es el texto estándar utilizado para el cuerpo del contenido. Debe ser altamente legible. La altura de línea es generosa para evitar que las líneas se sientan apretadas.
-    </p>
-    <p style={{ marginTop: '8px', color: '#64748b', fontSize: '0.875rem' }}>Clases: <code>text-base leading-7</code></p>
-  </div>
+### Encabezado 3 (h3)
 
-  ### Texto Pequeño (small)
+<div
+  style={{
+    padding: "16px",
+    border: "1px solid #e2e8f0",
+    borderRadius: "8px",
+    marginBottom: "16px",
+  }}
+>
+  <h3
+    className="scroll-m-20 text-2xl font-semibold tracking-tight"
+    style={{ fontSize: "1.5rem", fontWeight: 600 }}
+  >
+    Subsección
+  </h3>
+  <p style={{ marginTop: "8px", color: "#64748b", fontSize: "0.875rem" }}>
+    Clases: <code>text-2xl font-semibold tracking-tight</code>
+  </p>
+</div>
+
+### Párrafo Regular (p)
+
+<div
+  style={{
+    padding: "16px",
+    border: "1px solid #e2e8f0",
+    borderRadius: "8px",
+    marginBottom: "16px",
+  }}
+>
+  <p
+    className="leading-7 [&:not(:first-child)]:mt-6"
+    style={{ fontSize: "1rem", lineHeight: "1.75rem" }}
+  >
+    Este es el texto estándar utilizado para el cuerpo del contenido. Debe ser
+    altamente legible. La altura de línea es generosa para evitar que las líneas
+    se sientan apretadas.
+  </p>
+  <p style={{ marginTop: "8px", color: "#64748b", fontSize: "0.875rem" }}>
+    Clases: <code>text-base leading-7</code>
+  </p>
+</div>
+
+### Texto Pequeño (small)
+
   <div style={{ padding: '16px', border: '1px solid #e2e8f0', borderRadius: '8px', marginBottom: '16px' }}>
     <p className="text-sm font-medium leading-none" style={{ fontSize: '0.875rem', fontWeight: 500 }}>
       Texto utilizado para etiquetas, notas al pie o información secundaria.

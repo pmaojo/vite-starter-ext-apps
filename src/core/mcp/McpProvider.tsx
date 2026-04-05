@@ -1,4 +1,12 @@
-import { createContext, useContext, useEffect, useState, useCallback, useSyncExternalStore, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { logger } from "./logger";
 import { useApp } from "@modelcontextprotocol/ext-apps/react";
@@ -82,10 +90,16 @@ export function McpProvider({ children }: { children: ReactNode }) {
   const { t } = useTranslation();
 
   // State managed mostly by useApp, except for hostContext which isn't part of the core return value
-  const [hostContext, setHostContext] = useState<McpUiHostContext | undefined>(undefined);
+  const [hostContext, setHostContext] = useState<McpUiHostContext | undefined>(
+    undefined
+  );
 
   // We sync toolResult with external store because of session storage and HMR
-  const toolResult = useSyncExternalStore(subscribe, () => memToolResult, () => null);
+  const toolResult = useSyncExternalStore(
+    subscribe,
+    () => memToolResult,
+    () => null
+  );
 
   /**
    * App lifecycle and event callbacks setup.
@@ -140,7 +154,7 @@ export function McpProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (error) {
-      logger.error(t('app.logs.error', "App Error"), error.message);
+      logger.error(t("app.logs.error", "App Error"), error.message);
     }
   }, [error, t]);
 

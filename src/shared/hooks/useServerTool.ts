@@ -14,7 +14,9 @@ export function useServerTool(
   toolName: string,
   hostProvidedResult: CallToolResult | null
 ): UseServerToolResult {
-  const [lastHostResult, setLastHostResult] = useState<CallToolResult | null>(hostProvidedResult);
+  const [lastHostResult, setLastHostResult] = useState<CallToolResult | null>(
+    hostProvidedResult
+  );
   const [manualResult, setManualResult] = useState<CallToolResult | null>(null);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,19 +28,25 @@ export function useServerTool(
     setIsError(false);
   }
 
-  const executeTool = useCallback(async (args: Record<string, unknown> = {}) => {
-    if (!app) return;
-    try {
-      setIsLoading(true);
-      setIsError(false);
-      const result = await app.callServerTool({ name: toolName, arguments: args });
-      setManualResult(result as CallToolResult);
-    } catch (e) {
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [app, toolName]);
+  const executeTool = useCallback(
+    async (args: Record<string, unknown> = {}) => {
+      if (!app) return;
+      try {
+        setIsLoading(true);
+        setIsError(false);
+        const result = await app.callServerTool({
+          name: toolName,
+          arguments: args,
+        });
+        setManualResult(result as CallToolResult);
+      } catch (e) {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [app, toolName]
+  );
 
   const activeResult = manualResult || hostProvidedResult;
 

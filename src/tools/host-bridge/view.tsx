@@ -3,7 +3,6 @@ import { ActionCard } from "@/shared/components/ui/action-card";
 import { toast } from "sonner";
 
 export function HostBridgeView({ app }: ToolComponentProps) {
-
   const handleSendMessage = async () => {
     if (!app) {
       toast.error("App not connected.");
@@ -12,7 +11,12 @@ export function HostBridgeView({ app }: ToolComponentProps) {
     try {
       await app.sendMessage({
         role: "user",
-        content: [{ type: "text", text: "Hello from the Host Bridge tool! Task completed successfully." }]
+        content: [
+          {
+            type: "text",
+            text: "Hello from the Host Bridge tool! Task completed successfully.",
+          },
+        ],
       });
       toast.success("Message sent to host.");
     } catch (e: any) {
@@ -29,7 +33,7 @@ export function HostBridgeView({ app }: ToolComponentProps) {
       await app.sendLog({
         level: "info",
         logger: "host-bridge",
-        data: `Hydration complete at ${new Date().toISOString()}`
+        data: `Hydration complete at ${new Date().toISOString()}`,
       });
       toast.success("Log sent to host.");
     } catch (e: any) {
@@ -63,14 +67,16 @@ export function HostBridgeView({ app }: ToolComponentProps) {
     try {
       const data = JSON.stringify({ message: "Hello from MCP App!" }, null, 2);
       const { isError } = await app.downloadFile({
-        contents: [{
-          type: "resource",
-          resource: {
-            uri: "file:///demo-export.json",
-            mimeType: "application/json",
-            text: data,
+        contents: [
+          {
+            type: "resource",
+            resource: {
+              uri: "file:///demo-export.json",
+              mimeType: "application/json",
+              text: data,
+            },
           },
-        }],
+        ],
       });
       if (isError) {
         toast.warning("Download denied or cancelled by host.");
@@ -123,10 +129,13 @@ export function HostBridgeView({ app }: ToolComponentProps) {
   return (
     <div className="w-full max-w-4xl mx-auto mt-8 p-4">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold tracking-tight mb-2">Host Bridge Capabilities</h2>
+        <h2 className="text-2xl font-bold tracking-tight mb-2">
+          Host Bridge Capabilities
+        </h2>
         <p className="text-muted-foreground">
-          This tool demonstrates the frontend side effects available via the \`useApp\` SDK hook.
-          Use these actions to interact directly with the MCP host. Note: These tools are for demo purposes.
+          This tool demonstrates the frontend side effects available via the
+          \`useApp\` SDK hook. Use these actions to interact directly with the
+          MCP host. Note: These tools are for demo purposes.
         </p>
       </div>
 

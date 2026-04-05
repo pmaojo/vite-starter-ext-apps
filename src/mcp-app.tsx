@@ -27,7 +27,7 @@ function AppContent() {
   if (error) {
     return (
       <div className="p-4 text-destructive flex flex-col items-center justify-center h-screen">
-        <strong>{t('app.error')}</strong> {error.message}
+        <strong>{t("app.error")}</strong> {error.message}
       </div>
     );
   }
@@ -35,7 +35,7 @@ function AppContent() {
   if (!app) {
     return (
       <div className="p-4 flex items-center justify-center h-screen text-muted-foreground">
-        {t('app.connecting')}
+        {t("app.connecting")}
       </div>
     );
   }
@@ -44,17 +44,23 @@ function AppContent() {
   const toolName = hostContext?.toolInfo?.tool?.name;
 
   if (!toolName) {
-    return <div>{t('app.noToolContext')}</div>;
+    return <div>{t("app.noToolContext")}</div>;
   }
 
   // Look up the corresponding tool UI registered in the system
   const ToolComponent = TOOL_COMPONENTS[toolName];
 
   if (!ToolComponent) {
-    return <div>{t('app.toolNotFound', { toolName })}</div>;
+    return <div>{t("app.toolNotFound", { toolName })}</div>;
   }
 
-  return <ToolComponent app={app} toolResult={toolResult} hostContext={hostContext} />;
+  return (
+    <ToolComponent
+      app={app}
+      toolResult={toolResult}
+      hostContext={hostContext}
+    />
+  );
 }
 
 createRoot(document.getElementById("root")!).render(
@@ -63,5 +69,5 @@ createRoot(document.getElementById("root")!).render(
       <AppContent />
       <Toaster />
     </McpProvider>
-  </StrictMode>,
+  </StrictMode>
 );

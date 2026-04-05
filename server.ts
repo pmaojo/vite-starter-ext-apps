@@ -1,6 +1,13 @@
-import { registerAppResource, registerAppTool, RESOURCE_MIME_TYPE } from "@modelcontextprotocol/ext-apps/server";
+import {
+  registerAppResource,
+  registerAppTool,
+  RESOURCE_MIME_TYPE,
+} from "@modelcontextprotocol/ext-apps/server";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { CallToolResult, ReadResourceResult } from "@modelcontextprotocol/sdk/types.js";
+import type {
+  CallToolResult,
+  ReadResourceResult,
+} from "@modelcontextprotocol/sdk/types.js";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { createMcpHandler } from "mcp-handler";
@@ -42,7 +49,8 @@ function configureServer(server: McpServer) {
    * @description
    * Play the classic Tetris game in 3D in the UI.
    */
-  registerAppTool(server,
+  registerAppTool(
+    server,
     "threejs-tetris",
     {
       title: "ThreeJS Tetris",
@@ -51,8 +59,15 @@ function configureServer(server: McpServer) {
       _meta: { ui: { resourceUri } },
     },
     async (): Promise<CallToolResult> => {
-      return { content: [{ type: "text", text: "ThreeJS Tetris initialized. Play the game in the UI." }] };
-    },
+      return {
+        content: [
+          {
+            type: "text",
+            text: "ThreeJS Tetris initialized. Play the game in the UI.",
+          },
+        ],
+      };
+    }
   );
 
   /**
@@ -63,7 +78,8 @@ function configureServer(server: McpServer) {
    * which resource to fetch and render as an interactive UI.
    * This specific tool is for demo purposes to show how to retrieve server state.
    */
-  registerAppTool(server,
+  registerAppTool(
+    server,
     "get-time",
     {
       title: "Get Time",
@@ -74,7 +90,7 @@ function configureServer(server: McpServer) {
     async (): Promise<CallToolResult> => {
       const time = new Date().toISOString();
       return { content: [{ type: "text", text: time }] };
-    },
+    }
   );
 
   /**
@@ -85,17 +101,26 @@ function configureServer(server: McpServer) {
    * Capabilities demonstrated include `sendMessage`, `sendLog`, `openLink`,
    * `downloadFile`, `requestTeardown`, and `requestDisplayMode`.
    */
-  registerAppTool(server,
+  registerAppTool(
+    server,
     "host-bridge",
     {
       title: "Host Bridge",
-      description: "Demonstrates frontend SDK capabilities like sendMessage, sendLog, and openLink.",
+      description:
+        "Demonstrates frontend SDK capabilities like sendMessage, sendLog, and openLink.",
       inputSchema: z.object({}),
       _meta: { ui: { resourceUri } },
     },
     async (): Promise<CallToolResult> => {
-      return { content: [{ type: "text", text: "Host Bridge initialized. Please interact with the UI." }] };
-    },
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Host Bridge initialized. Please interact with the UI.",
+          },
+        ],
+      };
+    }
   );
 
   /**
@@ -104,17 +129,53 @@ function configureServer(server: McpServer) {
    * @description
    * A gamified interactive learning tool for the MCP Ext-Apps SDK.
    */
-  registerAppTool(server,
+  registerAppTool(
+    server,
     "learn-mcp",
     {
       title: "Learn MCP Ext-Apps",
-      description: "An interactive mobile-first responsive learning experience covering modelcontextprotocol/ext-apps documentation with gamification.",
+      description:
+        "An interactive mobile-first responsive learning experience covering modelcontextprotocol/ext-apps documentation with gamification.",
       inputSchema: z.object({}),
       _meta: { ui: { resourceUri } },
     },
     async (): Promise<CallToolResult> => {
-      return { content: [{ type: "text", text: "Learn MCP Ext-Apps tool initialized. Please interact with the UI to complete modules." }] };
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Learn MCP Ext-Apps tool initialized. Please interact with the UI to complete modules.",
+          },
+        ],
+      };
+    }
+  );
+
+  /**
+   * View API Documentation Tool.
+   *
+   * @description
+   * Surfaces the statically generated TypeDoc API documentation in an interactive UI.
+   */
+  registerAppTool(
+    server,
+    "view-docs",
+    {
+      title: "API Documentation",
+      description: "View the generated TypeDoc API documentation for this project.",
+      inputSchema: z.object({}),
+      _meta: { ui: { resourceUri } },
     },
+    async (): Promise<CallToolResult> => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "API Documentation initialized. Please view it in the UI.",
+          },
+        ],
+      };
+    }
   );
 
   /**
@@ -125,58 +186,75 @@ function configureServer(server: McpServer) {
    * via the MCP Apps SDK `callServerTool` function. It allows the React frontend
    * to securely request directory listings. This tool is for demo purposes.
    */
-  registerAppTool(server,
+  registerAppTool(
+    server,
     "list-files",
     {
       title: "List Files",
       description: "Lists files in the sandbox directory.",
       inputSchema: z.object({
-        subpath: z.string().optional().describe("Optional subpath within the sandbox to list."),
+        subpath: z
+          .string()
+          .optional()
+          .describe("Optional subpath within the sandbox to list."),
       }),
       _meta: { ui: { resourceUri } },
     },
     async (request: any): Promise<CallToolResult> => {
       const sandboxDir = path.resolve(process.cwd(), "mcp-sandbox");
-      const requestSubpath = request.params?.arguments?.subpath as string || "";
+      const requestSubpath =
+        (request.params?.arguments?.subpath as string) || "";
       const targetPath = path.resolve(sandboxDir, requestSubpath);
 
       // Security check: strictly validate the path starts with sandboxDir
       if (!targetPath.startsWith(sandboxDir)) {
-         return {
-           isError: true,
-           content: [{ type: "text", text: "Security Error: Path traversal detected. Access denied." }]
-         };
+        return {
+          isError: true,
+          content: [
+            {
+              type: "text",
+              text: "Security Error: Path traversal detected. Access denied.",
+            },
+          ],
+        };
       }
 
       try {
         const stats = await fs.stat(targetPath);
         if (!stats.isDirectory()) {
           return {
-             isError: true,
-             content: [{ type: "text", text: "Error: Target is not a directory." }]
+            isError: true,
+            content: [
+              { type: "text", text: "Error: Target is not a directory." },
+            ],
           };
         }
 
         const entries = await fs.readdir(targetPath, { withFileTypes: true });
-        const files = entries.map(entry => ({
+        const files = entries.map((entry) => ({
           name: entry.name,
           isDirectory: entry.isDirectory(),
-          path: path.relative(sandboxDir, path.join(targetPath, entry.name))
+          path: path.relative(sandboxDir, path.join(targetPath, entry.name)),
         }));
 
         return { content: [{ type: "text", text: JSON.stringify(files) }] };
       } catch (error: any) {
         return {
-           isError: true,
-           content: [{ type: "text", text: `Error reading directory: ${error.message}` }]
+          isError: true,
+          content: [
+            { type: "text", text: `Error reading directory: ${error.message}` },
+          ],
         };
       }
-    },
+    }
   );
 
   // Infer the base URL from Vercel environment variables, or fallback to localhost
   const protocol = process.env.VERCEL_URL ? "https" : "http";
-  const host = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || `localhost:${process.env.PORT || 3001}`;
+  const host =
+    process.env.VERCEL_PROJECT_PRODUCTION_URL ||
+    process.env.VERCEL_URL ||
+    `localhost:${process.env.PORT || 3001}`;
   const baseURL = `${protocol}://${host}`;
 
   /**
@@ -188,7 +266,8 @@ function configureServer(server: McpServer) {
    * The CSP policies defined here ensure proper domain access control.
    * This is a didactic demo implementation for a single-page React app.
    */
-  registerAppResource(server,
+  registerAppResource(
+    server,
     resourceUri,
     resourceUri,
     { mimeType: RESOURCE_MIME_TYPE },
@@ -202,21 +281,23 @@ function configureServer(server: McpServer) {
       }
       const html = await fs.readFile(htmlPath, "utf-8");
       return {
-        contents: [{
-          uri: resourceUri,
-          mimeType: RESOURCE_MIME_TYPE,
-          text: html,
-          _meta: {
-            ui: {
-              csp: {
-                connectDomains: [baseURL],
-                resourceDomains: [baseURL],
+        contents: [
+          {
+            uri: resourceUri,
+            mimeType: RESOURCE_MIME_TYPE,
+            text: html,
+            _meta: {
+              ui: {
+                csp: {
+                  connectDomains: [baseURL],
+                  resourceDomains: [baseURL],
+                },
               },
             },
           },
-        }],
+        ],
       };
-    },
+    }
   );
 }
 
@@ -234,11 +315,14 @@ export function createServer(): McpServer {
 }
 
 // Re-export standard handler for integration
-export const mcpHandler = createMcpHandler(async (server: McpServer) => {
+export const mcpHandler = createMcpHandler(
+  async (server: McpServer) => {
     configureServer(server);
-}, {
-  serverInfo: {
-    name: "Basic MCP App Server (React)",
-    version: "1.0.0",
+  },
+  {
+    serverInfo: {
+      name: "Basic MCP App Server (React)",
+      version: "1.0.0",
+    },
   }
-});
+);

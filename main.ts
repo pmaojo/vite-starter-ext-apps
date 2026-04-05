@@ -48,7 +48,9 @@ export function buildApp(createServerFn: () => McpServer) {
     if (fs.existsSync(htmlPath)) {
       res.sendFile(htmlPath);
     } else {
-      res.status(404).send(`UI not found at ${htmlPath}. Ensure the application is built.`);
+      res
+        .status(404)
+        .send(`UI not found at ${htmlPath}. Ensure the application is built.`);
     }
   });
 
@@ -70,7 +72,11 @@ export function buildApp(createServerFn: () => McpServer) {
 
     // Only reject if it's explicitly html to provide a helpful browser message
     if (req.headers.accept?.includes("text/html")) {
-      res.status(400).send("This endpoint is for MCP clients. It requires an SSE connection (text/event-stream) for GET requests or POST for messages.");
+      res
+        .status(400)
+        .send(
+          "This endpoint is for MCP clients. It requires an SSE connection (text/event-stream) for GET requests or POST for messages."
+        );
       return;
     }
 
@@ -90,9 +96,16 @@ export function buildApp(createServerFn: () => McpServer) {
 
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 
-const serverStore = new Map<string, { server: McpServer, transport: SSEServerTransport }>();
+const serverStore = new Map<
+  string,
+  { server: McpServer; transport: SSEServerTransport }
+>();
 
-async function handleMcpRequest(req: Request, res: Response, createServerFn: () => McpServer) {
+async function handleMcpRequest(
+  req: Request,
+  res: Response,
+  createServerFn: () => McpServer
+) {
   if (req.method === "GET") {
     const server = createServerFn();
     const transport = new SSEServerTransport("/mcp", res);
@@ -155,7 +168,7 @@ async function handleMcpRequest(req: Request, res: Response, createServerFn: () 
  * @param createServer - Factory function that creates a new McpServer instance per request.
  */
 export async function startStreamableHTTPServer(
-  createServer: () => McpServer,
+  createServer: () => McpServer
 ): Promise<void> {
   const port = parseInt(process.env.PORT ?? "3001", 10);
   const app = buildApp(createServer);
@@ -183,7 +196,7 @@ export async function startStreamableHTTPServer(
  * @param createServer - Factory function that creates a new McpServer instance.
  */
 export async function startStdioServer(
-  createServer: () => McpServer,
+  createServer: () => McpServer
 ): Promise<void> {
   await createServer().connect(new StdioServerTransport());
 }

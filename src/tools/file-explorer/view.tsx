@@ -1,8 +1,20 @@
 import { useState, useEffect } from "react";
 import type { ToolComponentProps } from "@/core/framework/tool-contract";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
-import { File, Folder, ChevronRight, AlertCircle, RefreshCw } from "lucide-react";
+import {
+  File,
+  Folder,
+  ChevronRight,
+  AlertCircle,
+  RefreshCw,
+} from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -10,7 +22,7 @@ import { z } from "zod";
 const FileEntrySchema = z.object({
   name: z.string(),
   isDirectory: z.boolean(),
-  path: z.string()
+  path: z.string(),
 });
 type FileEntry = z.infer<typeof FileEntrySchema>;
 
@@ -55,15 +67,15 @@ export function FileExplorerView({ app }: ToolComponentProps) {
       // Type-safe call to the backend
       const result = await app.callServerTool({
         name: "list-files",
-        arguments: { subpath }
+        arguments: { subpath },
       });
 
       if (result.isError) {
-        const errorText = result.content?.find(c => c.type === "text") as any;
+        const errorText = result.content?.find((c) => c.type === "text") as any;
         throw new Error(errorText?.text || "Unknown server error");
       }
 
-      const textContent = result.content?.find(c => c.type === "text") as any;
+      const textContent = result.content?.find((c) => c.type === "text") as any;
       if (!textContent) throw new Error("No content returned from server");
 
       const parsedData = JSON.parse(textContent.text);
@@ -107,14 +119,20 @@ export function FileExplorerView({ app }: ToolComponentProps) {
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle>Sandbox Explorer</CardTitle>
-          <CardDescription>Securely browse the mcp-sandbox directory</CardDescription>
+          <CardDescription>
+            Securely browse the mcp-sandbox directory
+          </CardDescription>
         </div>
-        <Button variant="outline" size="icon" onClick={() => fetchFiles(currentPath)} disabled={isLoading}>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => fetchFiles(currentPath)}
+          disabled={isLoading}
+        >
           <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
         </Button>
       </CardHeader>
       <CardContent>
-
         {/* Breadcrumb / Path Display */}
         <div className="flex items-center space-x-2 mb-4 p-2 bg-muted/50 rounded-md text-sm font-mono text-muted-foreground overflow-x-auto">
           <button
@@ -123,17 +141,20 @@ export function FileExplorerView({ app }: ToolComponentProps) {
           >
             sandbox
           </button>
-          {currentPath.split("/").filter(Boolean).map((part, idx, arr) => (
-            <div key={idx} className="flex items-center whitespace-nowrap">
-              <ChevronRight className="h-4 w-4 mx-1" />
-              <button
-                onClick={() => fetchFiles(arr.slice(0, idx + 1).join("/"))}
-                className="hover:text-foreground hover:underline"
-              >
-                {part}
-              </button>
-            </div>
-          ))}
+          {currentPath
+            .split("/")
+            .filter(Boolean)
+            .map((part, idx, arr) => (
+              <div key={idx} className="flex items-center whitespace-nowrap">
+                <ChevronRight className="h-4 w-4 mx-1" />
+                <button
+                  onClick={() => fetchFiles(arr.slice(0, idx + 1).join("/"))}
+                  className="hover:text-foreground hover:underline"
+                >
+                  {part}
+                </button>
+              </div>
+            ))}
         </div>
 
         {/* Error State */}
@@ -157,9 +178,13 @@ export function FileExplorerView({ app }: ToolComponentProps) {
           )}
 
           {isLoading && files.length === 0 ? (
-            <div className="p-8 text-center text-muted-foreground text-sm">Loading...</div>
+            <div className="p-8 text-center text-muted-foreground text-sm">
+              Loading...
+            </div>
           ) : files.length === 0 ? (
-            <div className="p-8 text-center text-muted-foreground text-sm">This directory is empty.</div>
+            <div className="p-8 text-center text-muted-foreground text-sm">
+              This directory is empty.
+            </div>
           ) : (
             files.map((file) => (
               <button

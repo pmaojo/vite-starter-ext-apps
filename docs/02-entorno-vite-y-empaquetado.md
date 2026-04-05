@@ -36,6 +36,7 @@ Si abres este archivo en tu editor de texto, verás miles de líneas de código 
 ### 2. `npm run build:full` (Sistema Completo: UI + Backend)
 
 Este es el comando por defecto para producción. Hace dos cosas:
+
 1. Ejecuta primero `build:ui` para generar el `mcp-app.html`.
 2. Luego utiliza el compilador de TypeScript (`tsc` o herramientas similares configuradas) para compilar el backend Node.js (`server.ts`, `main.ts`) y lo coloca en la carpeta `dist/`.
 

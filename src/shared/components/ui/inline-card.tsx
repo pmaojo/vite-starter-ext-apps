@@ -1,13 +1,13 @@
-import * as React from "react"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
 export interface InlineCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  title?: string
-  expandable?: boolean
-  onExpand?: () => void
-  showMore?: boolean
-  onShowMore?: () => void
-  primaryActions?: React.ReactNode
+  title?: string;
+  expandable?: boolean;
+  onExpand?: () => void;
+  showMore?: boolean;
+  onShowMore?: () => void;
+  primaryActions?: React.ReactNode;
 }
 
 export function InlineCard({
@@ -31,7 +31,9 @@ export function InlineCard({
     >
       {title && (
         <div className="px-4 py-3 border-b flex items-center justify-between">
-          <h3 className="text-sm font-semibold leading-none tracking-tight">{title}</h3>
+          <h3 className="text-sm font-semibold leading-none tracking-tight">
+            {title}
+          </h3>
           {expandable && (
             <button
               onClick={onExpand}
@@ -64,5 +66,5 @@ export function InlineCard({
         </div>
       )}
     </div>
-  )
+  );
 }
