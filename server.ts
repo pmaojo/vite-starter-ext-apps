@@ -118,6 +118,25 @@ function configureServer(server: McpServer) {
   );
 
   /**
+   * View Docs Tool.
+   *
+   * @description
+   * Serves the generated Typedoc documentation as an interactive UI.
+   */
+  registerAppTool(server,
+    "view-docs",
+    {
+      title: "View Documentation",
+      description: "View the generated JSDoc/Typedoc documentation for the MCP Server Basic React project.",
+      inputSchema: z.object({}),
+      _meta: { ui: { resourceUri } },
+    },
+    async (): Promise<CallToolResult> => {
+      return { content: [{ type: "text", text: "Documentation tool initialized. Please view the docs in the UI." }] };
+    },
+  );
+
+  /**
    * File Explorer Tool.
    *
    * @description
