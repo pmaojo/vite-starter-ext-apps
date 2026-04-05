@@ -1,0 +1,7 @@
+{
+  "entryPoints": ["src/mcp-app.tsx", "server.ts", "main.ts", "src/shared/**/*.ts", "src/shared/**/*.tsx", "src/tools/**/*.ts", "src/tools/**/*.tsx", "src/core/**/*.ts", "src/core/**/*.tsx", "src/lib/**/*.ts", "src/lib/**/*.tsx"],
+  "out": "public/docs",
+  "name": "MCP Server Basic React Documentation",
+  "exclude": ["**/*.spec.ts", "**/*.test.ts", "**/*.stories.tsx", "**/node_modules/**", "dist/**"],
+  "skipErrorChecking": true
+}
