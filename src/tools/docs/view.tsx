@@ -7,7 +7,7 @@ export function DocsView({}: ToolComponentProps) {
     <FullscreenView title="API Documentation" onClose={() => {}}>
       <div className="flex flex-col flex-1 h-[80vh] w-[90vw]">
         <iframe
-          src="/docs/index.html"
+          src={`${window.location.origin}/docs/index.html`}
           className="w-full h-full border-none rounded-md bg-white"
           title="Typedoc API Documentation"
         />
