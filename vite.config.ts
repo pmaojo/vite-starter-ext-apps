@@ -9,8 +9,7 @@ import { fileURLToPath } from "node:url";
 const INPUT = process.env.INPUT;
 if (
   !INPUT &&
-  !process.argv.includes("storybook") &&
-  !process.argv.includes("build-storybook") &&
+  !process.argv.some((arg) => arg.includes("storybook") || arg.includes("build-storybook")) &&
   !process.env.STORYBOOK &&
   process.env.NODE_ENV !== "test" &&
   !process.env.VITEST
