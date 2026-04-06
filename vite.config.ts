@@ -1,5 +1,6 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { viteSingleFile } from "vite-plugin-singlefile";
@@ -9,7 +10,9 @@ import { fileURLToPath } from "node:url";
 const INPUT = process.env.INPUT;
 if (
   !INPUT &&
-  !process.argv.some((arg) => arg.includes("storybook") || arg.includes("build-storybook")) &&
+  !process.argv.some(
+    (arg) => arg.includes("storybook") || arg.includes("build-storybook")
+  ) &&
   !process.env.STORYBOOK &&
   process.env.NODE_ENV !== "test" &&
   !process.env.VITEST
@@ -18,7 +21,7 @@ if (
 }
 const isDevelopment = process.env.NODE_ENV === "development";
 export default defineConfig({
-  plugins: [react(), viteSingleFile()],
+  plugins: [tailwindcss(), react(), viteSingleFile()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -30,7 +33,22 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       include: ["src/**/*.{ts,tsx}"],
-      exclude: ["src/**/*.d.ts", "src/**/*.test.{ts,tsx}", "src/shared/components/ui/**", "src/stories/**", "src/tools/**/view.tsx", "src/tools/**/components/**", "src/tools/**/libs/**", "src/tools/**/pages/**", "src/tools/**/index.ts", "src/tools/**/*.tsx", "src/guia-diseno/**", "src/shared/hooks/**", "src/core/framework/**", "src/types/**"],
+      exclude: [
+        "src/**/*.d.ts",
+        "src/**/*.test.{ts,tsx}",
+        "src/shared/components/ui/**",
+        "src/stories/**",
+        "src/tools/**/view.tsx",
+        "src/tools/**/components/**",
+        "src/tools/**/libs/**",
+        "src/tools/**/pages/**",
+        "src/tools/**/index.ts",
+        "src/tools/**/*.tsx",
+        "src/guia-diseno/**",
+        "src/shared/hooks/**",
+        "src/core/framework/**",
+        "src/types/**",
+      ],
       reporter: ["text", "json", "html"],
     },
   },
