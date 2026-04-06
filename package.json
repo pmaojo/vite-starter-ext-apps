@@ -73,6 +73,14 @@
     "zod": "^4.1.13",
     "zod-to-json-schema": "^3.25.2"
   },
+  "overrides": {
+    "@asamuzakjp/css-color": {
+      "lru-cache": "10.4.3"
+    },
+    "@asamuzakjp/dom-selector": {
+      "lru-cache": "10.4.3"
+    }
+  },
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --fix",
