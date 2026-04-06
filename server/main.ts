@@ -34,7 +34,7 @@ export function buildApp(createServerFn: () => McpServer) {
     // Determine where mcp-app.html is located
     let htmlPath = "";
     if (import.meta.filename.endsWith(".ts")) {
-      htmlPath = path.join(import.meta.dirname, "dist", "mcp-app.html");
+      htmlPath = path.join(import.meta.dirname, "..", "dist", "mcp-app.html");
     } else {
       // In a built application or vercel environment
       htmlPath = path.join(import.meta.dirname, "mcp-app.html");

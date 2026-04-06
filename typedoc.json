@@ -2,7 +2,7 @@
   "entryPoints": ["src/"],
   "entryPointStrategy": "expand",
   "out": "public/docs/",
-  "exclude": ["**/*.test.ts", "**/*.test.tsx", "src/guia-diseno/**/*", "src/**/*.stories.tsx"],
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "src/**/*.stories.tsx"],
   "theme": "default",
   "name": "MCP React Starter API Docs"
 }

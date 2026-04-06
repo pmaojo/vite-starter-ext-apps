@@ -26,10 +26,10 @@
   "scripts": {
     "build": "npm run build:full",
     "build:ui": "tsc --noEmit && cross-env INPUT=mcp-app.html vite build",
-    "build:full": "npm run build:ui && tsc -p tsconfig.server.json && bun build server.ts --outdir dist --target node && bun build main.ts --outfile dist/index.js --target node --external \"./server.js\" --banner \"#!/usr/bin/env node\"",
+    "build:full": "npm run build:ui && tsc -p tsconfig.server.json && bun build server/server.ts --outdir dist --target node && bun build server/main.ts --outfile dist/index.js --target node --external \"./server.js\" --banner \"#!/usr/bin/env node\"",
     "watch": "cross-env INPUT=mcp-app.html vite build --watch",
-    "serve": "bun --watch main.ts",
-    "serve:stdio": "bun main.ts --stdio",
+    "serve": "bun --watch server/main.ts",
+    "serve:stdio": "bun server/main.ts --stdio",
     "start": "cross-env NODE_ENV=development npm run build:full && npm run serve",
     "start:stdio": "cross-env NODE_ENV=development npm run build:full 1>&2 && npm run serve:stdio",
     "dev": "cross-env NODE_ENV=development concurrently \"npm run watch\" \"npm run serve\"",

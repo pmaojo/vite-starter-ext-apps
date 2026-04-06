@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { InlineCarousel } from "../shared/components/ui/inline-carousel";
+import { InlineCarousel } from "@/shared/components/ui/inline-carousel";
 
 const meta = {
   title: "Guía de Diseño/Layout/InlineCarousel",

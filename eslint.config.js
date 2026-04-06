@@ -5,7 +5,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist", "mcp-sandbox", ".storybook", "node_modules", "api", "public/docs"] },
+  { ignores: ["dist", ".storybook", "node_modules", "api", "public/docs"] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

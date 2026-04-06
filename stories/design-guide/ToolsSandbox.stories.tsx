@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { TOOL_COMPONENTS } from "../tools/registry";
+import { TOOL_COMPONENTS } from "@/tools/registry";
 
 // Types to mock what the actual MCP Host provides
 import type { App, McpUiHostContext } from "@modelcontextprotocol/ext-apps";

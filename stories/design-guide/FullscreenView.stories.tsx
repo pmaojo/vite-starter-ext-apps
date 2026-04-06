@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { FullscreenView } from "../shared/components/ui/fullscreen-view";
+import { FullscreenView } from "@/shared/components/ui/fullscreen-view";
 
 const meta = {
   title: "Guía de Diseño/Layout/FullscreenView",

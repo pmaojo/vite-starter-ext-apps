@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { InlineCard } from "../shared/components/ui/inline-card";
-import { Button } from "../shared/components/ui/button";
+import { InlineCard } from "@/shared/components/ui/inline-card";
+import { Button } from "@/shared/components/ui/button";
 
 const meta = {
   title: "Guía de Diseño/Layout/InlineCard",
