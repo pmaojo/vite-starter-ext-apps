@@ -6,38 +6,7 @@ This application acts as a sandbox that demonstrates how to implement a complex,
 
 ## 🛠️ Included Tools
 
-This repository showcases 6 fully-functional MCP tools, each highlighting different capabilities of the Ext-Apps SDK.
-
-### File Explorer
-A tool to navigate and interact with the sandboxed file system.
-
-![File Explorer](docs/assets/file-explorer.png)
-
-### Get Time
-A robust example of server-side data fetching and dynamic UI updates via the Host Bridge.
-
-![Get Time](docs/assets/get-time.png)
-
-### Host Bridge
-Demonstrates two-way messaging, logging, and interaction with the parent Host Context.
-
-![Host Bridge](docs/assets/host-bridge.png)
-
-### Learn MCP
-A step-by-step interactive wizard designed to introduce the core concepts of the Model Context Protocol.
-
-![Learn MCP](docs/assets/learn-mcp.png)
-
-### ThreeJS Tetris
-A complex, WebGL-powered 3D Tetris implementation proving that high-performance graphical apps can be embedded seamlessly as MCP Tool UIs.
-
-![ThreeJS Tetris](docs/assets/threejs-tetris.png)
-
-### View Docs
-A documentation viewer tool that renders dynamically generated TypeDoc API documentation securely via an iframe.
-
-![View Docs](docs/assets/view-docs.png)
-
+This repository showcases demo MCP tools, each highlighting different capabilities of the Ext-Apps SDK.
 
 ## 🚀 Getting Started
 
