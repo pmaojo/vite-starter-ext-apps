@@ -13,9 +13,9 @@ import path from "node:path";
 import { createMcpHandler } from "mcp-handler";
 import { z } from "zod";
 
-// Works both from source (server.ts) and compiled (dist/server.js)
+// Works both from source (server/server.ts) and compiled (dist/server.js)
 const DIST_DIR = import.meta.filename.endsWith(".ts")
-  ? path.join(import.meta.dirname, "dist")
+  ? path.join(import.meta.dirname, "..", "dist")
   : import.meta.dirname;
 
 /**
@@ -182,7 +182,7 @@ function configureServer(server: McpServer) {
       _meta: { ui: { resourceUri } },
     },
     async (request: unknown): Promise<CallToolResult> => {
-      const sandboxDir = path.resolve(process.cwd(), "mcp-sandbox");
+      const sandboxDir = path.resolve(process.cwd(), "src/tools/sandbox");
       const requestSubpath =
         ((request as Record<string, unknown>)?.params as Record<string, Record<string, unknown>>)?.arguments?.subpath as string || "";
       const targetPath = path.resolve(sandboxDir, requestSubpath);

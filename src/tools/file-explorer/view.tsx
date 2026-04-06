@@ -118,7 +118,7 @@ export function FileExplorerView({ app }: ToolComponentProps) {
         <div>
           <CardTitle>Sandbox Explorer</CardTitle>
           <CardDescription>
-            Securely browse the mcp-sandbox directory
+            Securely browse the src/tools/sandbox directory
           </CardDescription>
         </div>
         <Button

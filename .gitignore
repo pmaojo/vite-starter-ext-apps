@@ -2,6 +2,7 @@ node_modules/
 dist/
 
 *.log
+lint_output.txt
 storybook-static
 public/docs
 
